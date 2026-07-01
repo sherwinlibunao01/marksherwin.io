@@ -1,0 +1,44 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "low-contrast",
+        "value": "#f5f5f7 on #ffffff",
+        "reason": "Dark-mode CSS variable; analyzer pairs against white without respecting prefers-color-scheme media query",
+        "createdAt": "2026-06-30T19:02:01.903Z"
+      },
+      {
+        "rule": "low-contrast",
+        "value": "#98989d on #ffffff",
+        "reason": "Dark-mode CSS variable false positive; background is #0a0a0a in actual dark mode context",
+        "createdAt": "2026-06-30T19:02:02.379Z"
+      },
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "reason": "User brief explicitly requested Inter for body text",
+        "createdAt": "2026-06-30T19:03:23.947Z"
+      },
+      {
+        "rule": "low-contrast",
+        "value": "#f5f5f7",
+        "reason": "Dark-mode --text-primary variable; static analyzer pairs against white without honoring prefers-color-scheme",
+        "createdAt": "2026-06-30T19:06:01.030Z"
+      },
+      {
+        "rule": "low-contrast",
+        "value": "#98989d",
+        "reason": "Dark-mode --text-secondary variable false positive",
+        "createdAt": "2026-06-30T19:06:01.475Z"
+      },
+      {
+        "rule": "ai-color-palette",
+        "value": "purple",
+        "reason": "User brief explicitly requested blue/purple gradient AI accent",
+        "createdAt": "2026-06-30T19:06:01.512Z"
+      }
+    ]
+  }
+}

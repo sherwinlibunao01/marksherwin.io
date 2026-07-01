@@ -8,19 +8,238 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI",
+    sans-serif;
+  --font-mono: "SF Mono", "Roboto Mono", monospace;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI",
+    sans-serif;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: #111111;
+  color: #ffffff;
+}
+
+/* Concept A — "Studio": deep plum + pale gold, editorial precision */
+.concept-a {
+  --c-bg: oklch(1 0 0);
+  --c-surface: oklch(0.945 0.007 340);
+  --c-ink: oklch(0.205 0.018 340);
+  --c-muted: oklch(0.475 0.03 340);
+  --c-primary: oklch(0.36 0.147 340);
+  --c-primary-ink: oklch(0.97 0.01 340);
+  --c-accent: oklch(0.86 0.09 75);
+  --c-accent-ink: oklch(0.28 0.04 75);
+  --c-line: oklch(0.87 0.012 340);
+  --font-display: var(--font-fraunces);
+  --font-body: var(--font-inter);
+}
+
+/* Concept B — "Field": pine green + pale clay, engineered/grounded */
+.concept-b {
+  --c-bg: oklch(1 0 0);
+  --c-surface: oklch(0.95 0.009 160);
+  --c-ink: oklch(0.205 0.02 160);
+  --c-muted: oklch(0.475 0.025 160);
+  --c-primary: oklch(0.42 0.11 160);
+  --c-primary-ink: oklch(0.98 0.008 160);
+  --c-accent: oklch(0.88 0.07 60);
+  --c-accent-ink: oklch(0.32 0.05 50);
+  --c-line: oklch(0.88 0.012 160);
+  --c-grid-line: oklch(0.42 0.11 160 / 0.08);
+  --font-display: var(--font-space-grotesk);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-plex-mono);
+}
+
+/* Field-B background: a faint schematic grid plus soft ambient gradient
+   glows in the brand's pine/clay hues, fixed behind all content. The grid
+   drifts with scroll (parallax); the glow layer breathes independently.
+   Static (motionless) by default and under reduced motion — both layers
+   are pure enhancement over an already-fine plain white base. */
+.field-grid {
+  position: fixed;
+  top: -50vh;
+  left: -10vw;
+  right: -10vw;
+  bottom: -50vh;
+  z-index: 0;
+  pointer-events: none;
+  background-image: linear-gradient(var(--c-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--c-grid-line) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+.field-glow {
+  position: absolute;
+  inset: -20%;
+  background-image: radial-gradient(
+      640px circle at 82% 12%,
+      oklch(0.88 0.07 60 / 0.22),
+      transparent 60%
+    ),
+    radial-gradient(560px circle at 10% 68%, oklch(0.42 0.11 160 / 0.16), transparent 60%),
+    radial-gradient(720px circle at 60% 42%, oklch(0.42 0.11 160 / 0.09), transparent 65%),
+    radial-gradient(460px circle at 92% 90%, oklch(0.88 0.07 60 / 0.18), transparent 58%);
+}
+/* Mouse-follow light: a separate, viewport-exact layer (no overhang/scroll
+   offset like .field-grid has) so --mx/--my map 1:1 to the real cursor
+   position. Lerped toward the cursor in JS for a trailing, subtle feel. */
+.mouse-glow {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  --mx: 50%;
+  --my: 40%;
+  background-image: radial-gradient(
+    380px circle at var(--mx) var(--my),
+    oklch(0.42 0.11 160 / 0.1),
+    transparent 70%
+  );
+}
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .field-grid {
+      animation: field-drift linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0% 100%;
+    }
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .field-glow {
+    animation: field-breathe 26s ease-in-out infinite;
+  }
+}
+@keyframes field-breathe {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.08) rotate(2deg);
+  }
+}
+@keyframes field-drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-3vw, -25vh, 0);
+  }
+}
+
+/* Feedback marquee: continuous scroll, pauses on hover/focus so it's
+   readable, and stops entirely (falling back to a static row) under
+   reduced motion. The list is duplicated in the DOM to loop seamlessly;
+   the duplicate is aria-hidden. */
+.marquee-track {
+  animation: marquee-scroll 36s linear infinite;
+}
+.marquee-track:hover,
+.marquee-track:focus-within {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Scroll-driven reveal: progressive enhancement only. Elements are fully
+   visible by default; supporting browsers additionally fade/lift them in
+   as they cross the viewport. Unsupported browsers and reduced-motion
+   users simply see the static, already-visible layout. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 25%;
+    }
+  }
+}
+
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Concept B motion: terminal-flavored, systems-precise. */
+
+.status-dot {
+  position: relative;
+}
+.status-dot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: currentColor;
+  animation: pulse-ring 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .status-dot::before {
+    animation: none;
+    display: none;
+  }
+}
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+.caret {
+  display: inline-block;
+  width: 0.55em;
+  height: 1em;
+  margin-left: 0.2em;
+  vertical-align: -0.15em;
+  background: currentColor;
+  animation: blink-caret 1.1s steps(1) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .caret {
+    animation: none;
+  }
+}
+@keyframes blink-caret {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+

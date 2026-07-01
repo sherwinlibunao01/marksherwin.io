@@ -1,0 +1,455 @@
+import { Space_Grotesk, Inter, IBM_Plex_Mono } from "next/font/google";
+import { AutomationStack } from "./AutomationStack";
+import { MouseGlow } from "./MouseGlow";
+import {
+  contactEmail,
+  fullName,
+  ghlAutomations,
+  howItWorks,
+  offers,
+  outcomes,
+  projects,
+  skills,
+  testimonials,
+  voiceAiPoints,
+  voiceAiUrl,
+} from "../content";
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+});
+
+const plexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-plex-mono",
+});
+
+const nav = [
+  { href: "#automations", label: "Automations" },
+  { href: "#work", label: "Work" },
+  { href: "#voice-ai", label: "Voice AI" },
+  { href: "#contact", label: "Contact" },
+];
+
+export default function ConceptB() {
+  return (
+    <div
+      className={`${spaceGrotesk.variable} ${inter.variable} ${plexMono.variable} concept-b relative min-h-screen bg-[var(--c-bg)] text-[var(--c-ink)]`}
+      style={{ fontFamily: "var(--font-body)" }}
+    >
+      <div className="field-grid" aria-hidden="true">
+        <div className="field-glow" />
+      </div>
+      <div className="mouse-glow" aria-hidden="true" />
+      <MouseGlow />
+
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-[var(--c-primary)] focus:px-4 focus:py-2 focus:text-[var(--c-primary-ink)]"
+      >
+        Skip to content
+      </a>
+
+      <header className="relative z-10 border-b border-[var(--c-line)] bg-[var(--c-bg)]">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5 sm:px-10">
+          <a
+            href="#main"
+            className="text-[0.95rem] tracking-tight"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            {fullName}
+          </a>
+          <nav
+            className="flex items-center gap-5 text-sm text-[var(--c-muted)] sm:gap-7"
+            style={{ fontFamily: "var(--font-mono)" }}
+          >
+            <div className="hidden items-center gap-7 sm:flex">
+              {nav.map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className="group relative py-1 transition-colors duration-300 hover:text-[var(--c-ink)]"
+                >
+                  {item.label}
+                  <span className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-[var(--c-primary)] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100" />
+                </a>
+              ))}
+            </div>
+            <a
+              href="#contact"
+              className="shrink-0 rounded-[2px] bg-[var(--c-primary)] px-4 py-2 text-[var(--c-primary-ink)] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-px hover:shadow-[0_10px_30px_-10px_var(--c-primary)]"
+            >
+              Work together
+            </a>
+          </nav>
+        </div>
+      </header>
+
+      <main id="main" className="relative z-10">
+        {/* Hero */}
+        <section className="mx-auto max-w-6xl px-6 pb-14 pt-16 sm:px-10 sm:pt-24">
+          <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16 lg:items-start">
+            <div>
+              <p
+                className="inline-flex items-center gap-2.5 text-xs text-[var(--c-muted)]"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                <span className="status-dot inline-flex h-1.5 w-1.5 rounded-full bg-[var(--c-primary)] text-[var(--c-primary)]" />
+                STATUS: ACCEPTING NEW BUILDS
+                <span className="caret" aria-hidden="true" />
+              </p>
+              <h1
+                className="mt-6 text-[clamp(2.5rem,5.6vw,4.75rem)] leading-[1.03] tracking-[-0.03em] text-wrap-balance"
+                style={{ fontFamily: "var(--font-display)", textWrap: "balance" }}
+              >
+                Automation systems for businesses that hate dropped leads.
+              </h1>
+              <p
+                className="mt-7 max-w-xl text-pretty text-lg leading-8 text-[var(--c-muted)]"
+                style={{ textWrap: "pretty" }}
+              >
+                GoHighLevel, Zapier, n8n, custom APIs, and AI agents wired into one working
+                system — from lean teams to enterprise operations, capture, qualify, and
+                book without adding headcount.
+              </p>
+              <div className="mt-9 flex flex-wrap items-center gap-4">
+                <a
+                  href="#contact"
+                  className="rounded-[2px] bg-[var(--c-primary)] px-6 py-3.5 text-sm font-medium text-[var(--c-primary-ink)] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5 hover:shadow-[0_14px_36px_-12px_var(--c-primary)]"
+                >
+                  Book a call
+                </a>
+                <a
+                  href="#voice-ai"
+                  className="rounded-[2px] border border-[var(--c-line)] px-6 py-3.5 text-sm font-medium text-[var(--c-ink)] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5 hover:border-[var(--c-primary)]"
+                >
+                  Talk to the Voice AI
+                </a>
+              </div>
+            </div>
+
+            <div className="reveal border border-[var(--c-line)] bg-[var(--c-surface)]">
+              <div
+                className="flex items-center justify-between border-b border-[var(--c-line)] px-4 py-2.5 text-xs text-[var(--c-muted)]"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                <span>metrics.log</span>
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="status-dot inline-flex h-1.5 w-1.5 rounded-full bg-[var(--c-primary)] text-[var(--c-primary)]" />
+                  live
+                </span>
+              </div>
+              <div className="divide-y divide-[var(--c-line)]">
+                {outcomes.map((outcome) => (
+                  <div
+                    key={outcome.label}
+                    className="reveal flex items-center justify-between px-4 py-4"
+                  >
+                    <span className="text-sm text-[var(--c-muted)]">{outcome.label}</span>
+                    <span
+                      className="text-lg tracking-tight"
+                      style={{ fontFamily: "var(--font-mono)" }}
+                    >
+                      {outcome.value}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* How I help */}
+        <section className="border-t border-[var(--c-line)] bg-[var(--c-surface)] px-6 py-20 sm:px-10 sm:py-28">
+          <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+            <h2
+              className="reveal text-[clamp(2rem,3.6vw,3rem)] leading-[1.05] tracking-[-0.02em]"
+              style={{ fontFamily: "var(--font-display)", textWrap: "balance" }}
+            >
+              Less chasing. More closing.
+            </h2>
+            <ul className="space-y-4">
+              {offers.map((offer) => (
+                <li
+                  key={offer}
+                  className="reveal border border-[var(--c-line)] bg-[var(--c-bg)] p-6 text-lg leading-8 text-[var(--c-ink)] transition-colors duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-[var(--c-primary)]"
+                >
+                  {offer}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        {/* How it works — the mechanism behind the numbers */}
+        <section className="px-6 py-20 sm:px-10 sm:py-28">
+          <div className="mx-auto max-w-6xl">
+            <div className="reveal mb-14 max-w-2xl">
+              <h2
+                className="text-[clamp(2rem,3.6vw,3rem)] tracking-[-0.02em]"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                How it actually generates leads
+              </h2>
+              <p className="mt-4 text-lg leading-7 text-[var(--c-muted)]">
+                Not a black box — four concrete stages that hold up whether you&apos;re a
+                two-person team or a multi-location enterprise.
+              </p>
+            </div>
+            <div className="grid gap-px overflow-hidden border border-[var(--c-line)] bg-[var(--c-line)] sm:grid-cols-2 lg:grid-cols-4">
+              {howItWorks.map((stage) => (
+                <div
+                  key={stage.step}
+                  className="reveal flex flex-col gap-4 bg-[var(--c-bg)] p-6"
+                >
+                  <span
+                    className="text-xs text-[var(--c-primary)]"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    {stage.step}
+                  </span>
+                  <p
+                    className="text-lg tracking-tight"
+                    style={{ fontFamily: "var(--font-display)" }}
+                  >
+                    {stage.name}
+                  </p>
+                  <p className="text-sm leading-6 text-[var(--c-muted)]">{stage.detail}</p>
+                  <p className="mt-auto border-t border-[var(--c-line)] pt-4 text-sm leading-6 text-[var(--c-ink)]">
+                    {stage.benefit}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Automations — pipeline visualization */}
+        <section id="automations" className="scroll-mt-20">
+          <AutomationStack
+            automations={ghlAutomations}
+            title="Automations built to scale revenue teams"
+            subtitle="Practical workflows for sales teams, agencies, and multi-location or enterprise operations — more booked conversations, less manual admin."
+          />
+        </section>
+
+        {/* Projects */}
+        <section
+          id="work"
+          className="scroll-mt-20 border-t border-[var(--c-line)] bg-[var(--c-surface)] px-6 py-20 sm:px-10 sm:py-28"
+        >
+          <div className="mx-auto max-w-6xl">
+            <h2
+              className="reveal mb-12 text-[clamp(2rem,3.6vw,3rem)] tracking-[-0.02em]"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              Selected builds
+            </h2>
+            <div className="grid gap-4 sm:grid-cols-3">
+              {projects.map((project) => (
+                <article
+                  key={project.name}
+                  className="reveal flex flex-col justify-between border border-[var(--c-line)] bg-[var(--c-bg)] p-6 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:border-[var(--c-primary)] hover:shadow-[0_20px_40px_-24px_var(--c-primary)]"
+                >
+                  <div>
+                    <p
+                      className="text-lg tracking-tight"
+                      style={{ fontFamily: "var(--font-display)" }}
+                    >
+                      {project.name}
+                    </p>
+                    <p className="mt-3 text-sm leading-6 text-[var(--c-muted)]">
+                      {project.detail}
+                    </p>
+                  </div>
+                  <p
+                    className="mt-8 text-xs text-[var(--c-muted)]"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    &gt; {project.result}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Voice AI */}
+        <section id="voice-ai" className="scroll-mt-20 px-6 py-20 sm:px-10 sm:py-28">
+          <div className="mx-auto max-w-6xl border border-[var(--c-line)]">
+            <div
+              className="flex items-center justify-between border-b border-[var(--c-line)] bg-[var(--c-surface)] px-5 py-2.5 text-xs text-[var(--c-muted)]"
+              style={{ fontFamily: "var(--font-mono)" }}
+            >
+              <span>voice-agent.sys</span>
+              <span className="flex items-center gap-1.5">
+                <span className="status-dot inline-flex h-1.5 w-1.5 rounded-full bg-[var(--c-primary)] text-[var(--c-primary)]" />
+                online
+              </span>
+            </div>
+            <div className="grid lg:grid-cols-[1fr_1fr]">
+              <div className="reveal p-8 sm:p-12">
+                <p className="text-sm text-[var(--c-muted)]">Featured build</p>
+                <h2
+                  className="mt-4 text-[clamp(1.85rem,3.2vw,2.5rem)] leading-[1.08] tracking-[-0.02em]"
+                  style={{ fontFamily: "var(--font-display)", textWrap: "balance" }}
+                >
+                  A voice agent that never lets a call go unanswered.
+                </h2>
+                <p className="mt-6 max-w-md leading-7 text-[var(--c-muted)]">
+                  Built on Retell AI — answers, qualifies, and collects lead details while
+                  your team stays focused on the work in front of them.
+                </p>
+                <ul className="mt-8 space-y-2.5">
+                  {voiceAiPoints.map((point) => (
+                    <li
+                      key={point}
+                      className="flex items-center gap-3 text-sm text-[var(--c-ink)]"
+                    >
+                      <span
+                        className="text-[var(--c-muted)]"
+                        style={{ fontFamily: "var(--font-mono)" }}
+                      >
+                        &gt;
+                      </span>
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="border-t border-[var(--c-line)] bg-[var(--c-surface)] p-4 sm:border-l sm:border-t-0 sm:p-6">
+                <div className="overflow-hidden border border-[var(--c-line)] bg-white">
+                  <iframe
+                    className="h-[560px] w-full bg-white"
+                    src={voiceAiUrl}
+                    title="Retell Voice AI agent demo"
+                    allow="microphone; autoplay; clipboard-write"
+                  />
+                </div>
+                <p className="mt-3 text-xs text-[var(--c-muted)]">
+                  Live demo — this widget streams audio; if you can&apos;t use audio right now,
+                  email me and I&apos;ll send a recorded walkthrough instead.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Skills */}
+        <section className="border-t border-[var(--c-line)] px-6 py-20 sm:px-10 sm:py-28">
+          <div className="mx-auto max-w-6xl">
+            <h2
+              className="reveal mb-10 text-[clamp(2rem,3.6vw,3rem)] tracking-[-0.02em]"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              Toolkit
+            </h2>
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {Object.entries(skills).map(([group, items]) => (
+                <div key={group} className="reveal border border-[var(--c-line)] p-6">
+                  <p
+                    className="text-xs text-[var(--c-muted)]"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    // {group.toLowerCase()}
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
+                    {items.map((item) => (
+                      <span
+                        key={item}
+                        className="reveal text-sm text-[var(--c-ink)]"
+                        style={{ fontFamily: "var(--font-mono)" }}
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Client feedback */}
+        <section className="border-t border-[var(--c-line)] bg-[var(--c-surface)] py-20 sm:py-28">
+          <div className="mx-auto max-w-6xl px-6 sm:px-10">
+            <h2
+              className="reveal mb-10 text-[clamp(2rem,3.6vw,3rem)] tracking-[-0.02em]"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              What clients say
+            </h2>
+          </div>
+          <div
+            className="overflow-hidden"
+            style={{
+              maskImage:
+                "linear-gradient(to right, transparent, black 6%, black 94%, transparent)",
+              WebkitMaskImage:
+                "linear-gradient(to right, transparent, black 6%, black 94%, transparent)",
+            }}
+          >
+            <div className="marquee-track flex w-max gap-4 px-6 sm:px-10">
+              {[...testimonials, ...testimonials].map((t, i) => (
+                <figure
+                  key={`${t.name}-${i}`}
+                  aria-hidden={i >= testimonials.length}
+                  className="flex w-[320px] shrink-0 flex-col justify-between gap-6 border border-dashed border-[var(--c-line)] bg-[var(--c-bg)] p-6"
+                >
+                  <blockquote className="text-base leading-7 text-[var(--c-muted)]">
+                    &ldquo;{t.quote}&rdquo;
+                  </blockquote>
+                  <figcaption className="text-sm">
+                    <span className="block text-[var(--c-ink)]">{t.name}</span>
+                    <span
+                      className="text-[var(--c-muted)]"
+                      style={{ fontFamily: "var(--font-mono)" }}
+                    >
+                      {t.business}
+                    </span>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Contact */}
+        <section
+          id="contact"
+          className="scroll-mt-20 border-t border-[var(--c-line)] bg-[var(--c-surface)] px-6 py-20 sm:px-10 sm:py-28"
+        >
+          <div className="reveal mx-auto flex max-w-6xl flex-col justify-between gap-8 md:flex-row md:items-end">
+            <div>
+              <p
+                className="text-xs text-[var(--c-muted)]"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                contact.init()
+              </p>
+              <h2
+                className="mt-4 max-w-2xl text-[clamp(2rem,4.2vw,3.5rem)] leading-[1.05] tracking-[-0.02em]"
+                style={{ fontFamily: "var(--font-display)", textWrap: "balance" }}
+              >
+                Build the workflow once.
+              </h2>
+            </div>
+            <a
+              href={`mailto:${contactEmail}`}
+              className="w-fit rounded-[2px] bg-[var(--c-primary)] px-6 py-3.5 text-sm font-medium text-[var(--c-primary-ink)] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5 hover:shadow-[0_14px_36px_-12px_var(--c-primary)]"
+            >
+              {contactEmail}
+            </a>
+          </div>
+        </section>
+      </main>
+    </div>
+  );
+}
