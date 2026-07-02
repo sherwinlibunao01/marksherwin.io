@@ -1,51 +1,7 @@
 @import "tailwindcss";
 
+/* "Field": pine green + pale clay, engineered/grounded */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI",
-    sans-serif;
-  --font-mono: "SF Mono", "Roboto Mono", monospace;
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI",
-    sans-serif;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-::selection {
-  background: #111111;
-  color: #ffffff;
-}
-
-/* Concept A — "Studio": deep plum + pale gold, editorial precision */
-.concept-a {
-  --c-bg: oklch(1 0 0);
-  --c-surface: oklch(0.945 0.007 340);
-  --c-ink: oklch(0.205 0.018 340);
-  --c-muted: oklch(0.475 0.03 340);
-  --c-primary: oklch(0.36 0.147 340);
-  --c-primary-ink: oklch(0.97 0.01 340);
-  --c-accent: oklch(0.86 0.09 75);
-  --c-accent-ink: oklch(0.28 0.04 75);
-  --c-line: oklch(0.87 0.012 340);
-  --font-display: var(--font-fraunces);
-  --font-body: var(--font-inter);
-}
-
-/* Concept B — "Field": pine green + pale clay, engineered/grounded */
-.concept-b {
   --c-bg: oklch(1 0 0);
   --c-surface: oklch(0.95 0.009 160);
   --c-ink: oklch(0.205 0.02 160);
@@ -59,6 +15,32 @@ html {
   --font-display: var(--font-space-grotesk);
   --font-body: var(--font-inter);
   --font-mono: var(--font-plex-mono);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@theme inline {
+  --color-background: var(--c-bg);
+  --color-foreground: var(--c-ink);
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI",
+    sans-serif;
+  --font-mono: "SF Mono", "Roboto Mono", monospace;
+}
+
+body {
+  background: var(--c-bg);
+  color: var(--c-ink);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI",
+    sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: var(--c-primary);
+  color: var(--c-primary-ink);
 }
 
 /* Field-B background: a faint schematic grid plus soft ambient gradient
@@ -241,5 +223,88 @@ html {
   100% {
     opacity: 0;
   }
+}
+
+/* Hero boot sequence: time-based (not scroll-linked) first-load
+   choreography. Each element carries an --i index; entrance is staggered
+   off that. Elements are visible by default so anything that skips the
+   animation (reduced motion, no-JS, print) still renders correctly. */
+@media (prefers-reduced-motion: no-preference) {
+  .boot-in {
+    animation: boot-in 700ms var(--ease-out-expo) both;
+    animation-delay: calc(var(--i, 0) * 90ms);
+  }
+}
+@keyframes boot-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Stagger group: paired with StaggerGroup.tsx. Children sit slightly
+   below/faded until the group's IntersectionObserver adds `.is-in` to the
+   parent, then transition in with a per-item delay from --i. JS-driven
+   (rather than scroll-timeline) so the delay behaves predictably. */
+.stagger-item {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 500ms var(--ease-out-quart), transform 500ms var(--ease-out-quart);
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+.is-in .stagger-item {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .stagger-item {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Trace line: a left-to-right wipe under the "how it works" stages,
+   drawn once as that section crosses the viewport. Purely decorative
+   reinforcement of the pipeline narrative — the stages themselves are
+   already legible without it, so this degrades to a plain static line. */
+.trace-line {
+  position: relative;
+  height: 2px;
+  background: var(--c-line);
+  overflow: hidden;
+}
+.trace-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--c-primary);
+  transform-origin: left;
+  transform: scaleX(0);
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .trace-line::after {
+      animation: trace-draw linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 45%;
+    }
+  }
+}
+@keyframes trace-draw {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Decode value: fixed-width glyph swap while DecodeValue.tsx scrambles
+   in a metric. tabular-nums keeps digits from jittering in width as
+   characters cycle before settling. */
+.decode-value {
+  font-variant-numeric: tabular-nums;
 }
 

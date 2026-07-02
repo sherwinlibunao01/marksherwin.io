@@ -1,347 +1,472 @@
-const projects = [
-  {
-    name: "Lead response engine",
-    detail: "New leads routed, tagged, and followed up before they go cold.",
-    result: "Reply in under 60 seconds",
-  },
-  {
-    name: "Booking automation",
-    detail: "Forms, calendars, reminders, and pipeline stages connected end to end.",
-    result: "Fewer missed appointments",
-  },
-  {
-    name: "AI client intake",
-    detail: "Voice AI captures details, qualifies leads, and sends clean notes to the CRM.",
-    result: "24/7 lead capture",
-  },
-];
+import { Space_Grotesk, Inter, IBM_Plex_Mono } from "next/font/google";
+import { AutomationStack } from "./AutomationStack";
+import { MouseGlow } from "./MouseGlow";
+import { StaggerGroup } from "./StaggerGroup";
+import { DecodeValue } from "./DecodeValue";
+import {
+  contactEmail,
+  fullName,
+  ghlAutomations,
+  howItWorks,
+  offers,
+  outcomes,
+  projects,
+  skills,
+  testimonials,
+  voiceAiPoints,
+  voiceAiUrl,
+} from "./content";
 
-const outcomes = [
-  {
-    value: "24/7",
-    label: "lead capture",
-  },
-  {
-    value: "<60s",
-    label: "speed to lead",
-  },
-  {
-    value: "10+ hrs",
-    label: "saved weekly",
-  },
-];
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+});
 
-const offers = [
-  "Turn missed calls and form fills into booked opportunities.",
-  "Connect GoHighLevel, Zapier, n8n, webhooks, and AI into one clean system.",
-  "Automate follow-ups, reminders, handoffs, and client onboarding.",
-];
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+});
 
-const ghlAutomations = [
-  {
-    name: "Missed call text back",
-    detail: "Instant SMS replies when a customer calls and no one answers.",
-    outcome: "Recover lost leads",
-  },
-  {
-    name: "Speed-to-lead follow-up",
-    detail: "New inquiries get tagged, assigned, and contacted automatically.",
-    outcome: "Book while interest is hot",
-  },
-  {
-    name: "Appointment reminders",
-    detail: "SMS and email reminders before visits, calls, estimates, or consultations.",
-    outcome: "Reduce no-shows",
-  },
-  {
-    name: "Review generation",
-    detail: "Happy customers receive clean review requests after the job is completed.",
-    outcome: "Grow local trust",
-  },
-  {
-    name: "Lead reactivation",
-    detail: "Old leads and past customers get smart follow-up campaigns.",
-    outcome: "Create repeat revenue",
-  },
-  {
-    name: "Pipeline automation",
-    detail: "Deals move through stages with tasks, notifications, and handoffs.",
-    outcome: "Stay organized",
-  },
-];
+const plexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-plex-mono",
+});
 
-const skills = [
-  "GoHighLevel workflows",
-  "Zapier automations",
-  "n8n workflows",
-  "CRM pipeline setup",
-  "Lead capture systems",
-  "Appointment booking",
-  "Email and SMS follow-up",
-  "Webhook integrations",
-  "API connections",
-  "Form automation",
-  "Client onboarding flows",
-  "AI-powered workflows",
+const nav = [
+  { href: "#automations", label: "Automations" },
+  { href: "#work", label: "Work" },
+  { href: "#voice-ai", label: "Voice AI" },
+  { href: "#contact", label: "Contact" },
 ];
-
-const voiceAiUrl =
-  "https://agent.retellai.com/orb/agent_dd540600e9a86a7de5a9bdd7a6?token=be40d9a1c4ee510cc72a088bcc9f89d3";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#fbfbfd] text-[#111111]">
-      <nav className="fixed inset-x-0 top-0 z-50 border-b border-black/[0.06] bg-white/80 backdrop-blur-2xl">
-        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6">
-          <a className="text-sm font-medium tracking-tight transition-opacity hover:opacity-60" href="#hero">
-            Mark Sherwin Libunao
-          </a>
-          <div className="flex items-center gap-5 text-xs text-black/55">
-            <a className="transition-colors hover:text-black" href="#ghl">
-              GHL
-            </a>
-            <a className="transition-colors hover:text-black" href="#projects">
-              Projects
-            </a>
-            <a className="transition-colors hover:text-black" href="#voice-ai">
-              Voice AI
-            </a>
-            <a className="transition-colors hover:text-black" href="#skills">
-              Skills
-            </a>
-            <a className="transition-colors hover:text-black" href="#contact">
-              Contact
-            </a>
-          </div>
-        </div>
-      </nav>
+    <div
+      className={`${spaceGrotesk.variable} ${inter.variable} ${plexMono.variable} relative min-h-screen bg-[var(--c-bg)] text-[var(--c-ink)]`}
+      style={{ fontFamily: "var(--font-body)" }}
+    >
+      <div className="field-grid" aria-hidden="true">
+        <div className="field-glow" />
+      </div>
+      <div className="mouse-glow" aria-hidden="true" />
+      <MouseGlow />
 
-      <section
-        id="hero"
-        className="mx-auto flex min-h-[92vh] max-w-6xl flex-col justify-center px-6 pb-20 pt-28"
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-[var(--c-primary)] focus:px-4 focus:py-2 focus:text-[var(--c-primary-ink)]"
       >
-        <div className="grid items-center gap-14 lg:grid-cols-[1.05fr_0.95fr]">
-          <div className="max-w-3xl">
-            <p className="mb-5 text-sm font-medium text-black/50">Automation portfolio</p>
-            <h1 className="text-balance text-5xl font-semibold tracking-tight text-black sm:text-7xl lg:text-8xl">
-              Mark Sherwin Libunao
-            </h1>
-            <p className="mt-7 max-w-2xl text-xl leading-8 text-black/58 sm:text-2xl sm:leading-9">
-              I build automation systems that help businesses capture leads, reply faster, and book more work.
-            </p>
-            <div className="mt-10 flex flex-wrap items-center gap-3">
-              <a
-                className="rounded-full bg-black px-6 py-3 text-sm font-medium text-white transition duration-300 hover:-translate-y-0.5 hover:bg-black/85"
-                href="#contact"
-              >
-                Work together
-              </a>
-              <a
-                className="rounded-full border border-black/10 bg-white px-6 py-3 text-sm font-medium text-black transition duration-300 hover:-translate-y-0.5 hover:border-black/20 hover:bg-black/[0.03]"
-                href="#voice-ai"
-              >
-                Try Voice AI
-              </a>
+        Skip to content
+      </a>
+
+      <header className="relative z-10 border-b border-[var(--c-line)] bg-[var(--c-bg)]">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5 sm:px-10">
+          <a
+            href="#main"
+            className="text-[0.95rem] tracking-tight"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            {fullName}
+          </a>
+          <nav
+            className="flex items-center gap-5 text-sm text-[var(--c-muted)] sm:gap-7"
+            style={{ fontFamily: "var(--font-mono)" }}
+          >
+            <div className="hidden items-center gap-7 sm:flex">
+              {nav.map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className="group relative py-1 transition-colors duration-300 hover:text-[var(--c-ink)]"
+                >
+                  {item.label}
+                  <span className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-[var(--c-primary)] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100" />
+                </a>
+              ))}
             </div>
-          </div>
+            <a
+              href="#contact"
+              className="shrink-0 rounded-[2px] bg-[var(--c-primary)] px-4 py-2 text-[var(--c-primary-ink)] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-px hover:shadow-[0_10px_30px_-10px_var(--c-primary)] active:scale-95"
+            >
+              Work together
+            </a>
+          </nav>
+        </div>
+      </header>
 
-          <div className="relative mx-auto aspect-[4/5] w-full max-w-[430px] overflow-hidden rounded-[2rem] border border-black/[0.08] bg-white shadow-[0_40px_120px_rgba(0,0,0,0.08)]">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(245,245,247,0.95),transparent_48%)]" />
-            <div className="relative flex h-full flex-col justify-between p-6">
-              <div className="flex items-center justify-between text-xs text-black/40">
-                <span>Growth stack</span>
-                <span>AI ready</span>
+      <main id="main" className="relative z-10">
+        {/* Hero — boot sequence: status line, headline, subhead, CTAs,
+            metrics panel stagger in on first load, not on scroll. */}
+        <section className="mx-auto max-w-6xl px-6 pb-14 pt-16 sm:px-10 sm:pt-24">
+          <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16 lg:items-start">
+            <div>
+              <p
+                className="boot-in inline-flex items-center gap-2.5 text-xs text-[var(--c-muted)]"
+                style={{ fontFamily: "var(--font-mono)", "--i": 0 } as React.CSSProperties}
+              >
+                <span className="status-dot inline-flex h-1.5 w-1.5 rounded-full bg-[var(--c-primary)] text-[var(--c-primary)]" />
+                STATUS: ACCEPTING NEW BUILDS
+                <span className="caret" aria-hidden="true" />
+              </p>
+              <h1
+                className="boot-in mt-6 text-[clamp(2.5rem,5.6vw,4.75rem)] leading-[1.03] tracking-[-0.03em] text-wrap-balance"
+                style={{ fontFamily: "var(--font-display)", textWrap: "balance", "--i": 1 } as React.CSSProperties}
+              >
+                Automation systems for businesses that hate dropped leads.
+              </h1>
+              <p
+                className="boot-in mt-7 max-w-xl text-pretty text-lg leading-8 text-[var(--c-muted)]"
+                style={{ textWrap: "pretty", "--i": 2 } as React.CSSProperties}
+              >
+                GoHighLevel, Zapier, n8n, custom APIs, and AI agents wired into one working
+                system — from lean teams to enterprise operations, capture, qualify, and
+                book without adding headcount.
+              </p>
+              <div
+                className="boot-in mt-9 flex flex-wrap items-center gap-4"
+                style={{ "--i": 3 } as React.CSSProperties}
+              >
+                <a
+                  href="#contact"
+                  className="rounded-[2px] bg-[var(--c-primary)] px-6 py-3.5 text-sm font-medium text-[var(--c-primary-ink)] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5 hover:shadow-[0_14px_36px_-12px_var(--c-primary)] active:scale-95"
+                >
+                  Book a call
+                </a>
+                <a
+                  href="#voice-ai"
+                  className="rounded-[2px] border border-[var(--c-line)] px-6 py-3.5 text-sm font-medium text-[var(--c-ink)] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5 hover:border-[var(--c-primary)] active:scale-95"
+                >
+                  Talk to the Voice AI
+                </a>
               </div>
+            </div>
 
-              <div className="space-y-3">
-                {["Capture", "Qualify", "Book"].map((item, index) => (
+            <div
+              className="boot-in border border-[var(--c-line)] bg-[var(--c-surface)]"
+              style={{ "--i": 2 } as React.CSSProperties}
+            >
+              <div
+                className="flex items-center justify-between border-b border-[var(--c-line)] px-4 py-2.5 text-xs text-[var(--c-muted)]"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                <span>metrics.log</span>
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="status-dot inline-flex h-1.5 w-1.5 rounded-full bg-[var(--c-primary)] text-[var(--c-primary)]" />
+                  live
+                </span>
+              </div>
+              <div className="divide-y divide-[var(--c-line)]">
+                {outcomes.map((outcome) => (
                   <div
-                    className="group flex items-center justify-between rounded-2xl border border-black/[0.06] bg-[#fbfbfd] p-4 transition duration-500 hover:-translate-y-1 hover:bg-white hover:shadow-[0_18px_60px_rgba(0,0,0,0.08)]"
-                    key={item}
+                    key={outcome.label}
+                    className="flex items-center justify-between px-4 py-4"
                   >
-                    <div>
-                      <p className="text-sm font-medium">{item}</p>
-                      <p className="mt-1 text-xs text-black/45">Connected</p>
-                    </div>
-                    <div className="h-2 w-24 rounded-full bg-black/[0.08]">
-                      <div
-                        className="h-full rounded-full bg-black transition-all duration-700 group-hover:w-full"
-                        style={{ width: `${64 + index * 12}%` }}
-                      />
-                    </div>
+                    <span className="text-sm text-[var(--c-muted)]">{outcome.label}</span>
+                    <span
+                      className="text-lg tracking-tight"
+                      style={{ fontFamily: "var(--font-mono)" }}
+                    >
+                      <DecodeValue value={outcome.value} />
+                    </span>
                   </div>
                 ))}
               </div>
-
-              <div className="rounded-3xl bg-black p-5 text-white">
-                <p className="text-xs text-white/45">Outcome</p>
-                <p className="mt-2 text-3xl font-semibold tracking-tight">More booked leads.</p>
-              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="border-t border-black/[0.06] bg-white px-6 py-20">
-        <div className="mx-auto grid max-w-6xl gap-4 md:grid-cols-3">
-          {outcomes.map((outcome) => (
-            <div className="border-b border-black/[0.08] pb-8 md:border-b-0 md:pb-0" key={outcome.label}>
-              <p className="text-5xl font-semibold tracking-tight text-black">{outcome.value}</p>
-              <p className="mt-3 text-sm text-black/48">{outcome.label}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="px-6 py-24">
-        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
-          <div>
-            <p className="text-sm font-medium text-black/45">How I help</p>
-            <h2 className="mt-4 text-4xl font-semibold tracking-tight sm:text-6xl">
+        {/* How I help */}
+        <section className="border-t border-[var(--c-line)] bg-[var(--c-surface)] px-6 py-20 sm:px-10 sm:py-28">
+          <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+            <h2
+              className="reveal text-[clamp(2rem,3.6vw,3rem)] leading-[1.05] tracking-[-0.02em]"
+              style={{ fontFamily: "var(--font-display)", textWrap: "balance" }}
+            >
               Less chasing. More closing.
             </h2>
+            <StaggerGroup as="ul" className="space-y-4">
+              {offers.map((offer, i) => (
+                <li
+                  key={offer}
+                  className="stagger-item border border-[var(--c-line)] bg-[var(--c-bg)] p-6 text-lg leading-8 text-[var(--c-ink)] transition-colors duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-[var(--c-primary)]"
+                  style={{ "--i": i } as React.CSSProperties}
+                >
+                  {offer}
+                </li>
+              ))}
+            </StaggerGroup>
           </div>
-          <div className="space-y-4">
-            {offers.map((offer) => (
-              <div
-                className="rounded-[1.5rem] border border-black/[0.08] bg-white p-6 text-lg leading-8 text-black/68 shadow-[0_18px_70px_rgba(0,0,0,0.04)] transition duration-300 hover:-translate-y-1 hover:text-black"
-                key={offer}
-              >
-                {offer}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
 
-      <section id="ghl" className="scroll-mt-20 border-t border-black/[0.06] bg-white px-6 py-24">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-10 grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+        {/* How it works — the mechanism behind the numbers */}
+        <section className="px-6 py-20 sm:px-10 sm:py-28">
+          <div className="mx-auto max-w-6xl">
+            <div className="reveal mb-14 max-w-2xl">
+              <h2
+                className="text-[clamp(2rem,3.6vw,3rem)] tracking-[-0.02em]"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                How it actually generates leads
+              </h2>
+              <p className="mt-4 text-lg leading-7 text-[var(--c-muted)]">
+                Not a black box — four concrete stages that hold up whether you&apos;re a
+                two-person team or a multi-location enterprise.
+              </p>
+            </div>
+            <div className="trace-line mb-px" aria-hidden="true" />
+            <StaggerGroup className="grid gap-px overflow-hidden border border-[var(--c-line)] bg-[var(--c-line)] sm:grid-cols-2 lg:grid-cols-4">
+              {howItWorks.map((stage, i) => (
+                <div
+                  key={stage.step}
+                  className="stagger-item flex flex-col gap-4 bg-[var(--c-bg)] p-6"
+                  style={{ "--i": i } as React.CSSProperties}
+                >
+                  <span
+                    className="text-xs text-[var(--c-primary)]"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    {stage.step}
+                  </span>
+                  <p
+                    className="text-lg tracking-tight"
+                    style={{ fontFamily: "var(--font-display)" }}
+                  >
+                    {stage.name}
+                  </p>
+                  <p className="text-sm leading-6 text-[var(--c-muted)]">{stage.detail}</p>
+                  <p className="mt-auto border-t border-[var(--c-line)] pt-4 text-sm leading-6 text-[var(--c-ink)]">
+                    {stage.benefit}
+                  </p>
+                </div>
+              ))}
+            </StaggerGroup>
+          </div>
+        </section>
+
+        {/* Automations — pipeline visualization */}
+        <section id="automations" className="scroll-mt-20">
+          <AutomationStack
+            automations={ghlAutomations}
+            title="Automations built to scale revenue teams"
+            subtitle="Practical workflows for sales teams, agencies, and multi-location or enterprise operations — more booked conversations, less manual admin."
+          />
+        </section>
+
+        {/* Projects */}
+        <section
+          id="work"
+          className="scroll-mt-20 border-t border-[var(--c-line)] bg-[var(--c-surface)] px-6 py-20 sm:px-10 sm:py-28"
+        >
+          <div className="mx-auto max-w-6xl">
+            <h2
+              className="reveal mb-12 text-[clamp(2rem,3.6vw,3rem)] tracking-[-0.02em]"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              Selected builds
+            </h2>
+            <StaggerGroup className="grid gap-4 sm:grid-cols-3">
+              {projects.map((project, i) => (
+                <article
+                  key={project.name}
+                  className="stagger-item flex flex-col justify-between border border-[var(--c-line)] bg-[var(--c-bg)] p-6 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:border-[var(--c-primary)] hover:shadow-[0_20px_40px_-24px_var(--c-primary)]"
+                  style={{ "--i": i } as React.CSSProperties}
+                >
+                  <div>
+                    <p
+                      className="text-lg tracking-tight"
+                      style={{ fontFamily: "var(--font-display)" }}
+                    >
+                      {project.name}
+                    </p>
+                    <p className="mt-3 text-sm leading-6 text-[var(--c-muted)]">
+                      {project.detail}
+                    </p>
+                  </div>
+                  <p
+                    className="mt-8 text-xs text-[var(--c-muted)]"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    &gt; {project.result}
+                  </p>
+                </article>
+              ))}
+            </StaggerGroup>
+          </div>
+        </section>
+
+        {/* Voice AI */}
+        <section id="voice-ai" className="scroll-mt-20 px-6 py-20 sm:px-10 sm:py-28">
+          <div className="mx-auto max-w-6xl border border-[var(--c-line)]">
+            <div
+              className="flex items-center justify-between border-b border-[var(--c-line)] bg-[var(--c-surface)] px-5 py-2.5 text-xs text-[var(--c-muted)]"
+              style={{ fontFamily: "var(--font-mono)" }}
+            >
+              <span>voice-agent.sys</span>
+              <span className="flex items-center gap-1.5">
+                <span className="status-dot inline-flex h-1.5 w-1.5 rounded-full bg-[var(--c-primary)] text-[var(--c-primary)]" />
+                online
+              </span>
+            </div>
+            <div className="grid lg:grid-cols-[1fr_1fr]">
+              <div className="reveal p-8 sm:p-12">
+                <p className="text-sm text-[var(--c-muted)]">Featured build</p>
+                <h2
+                  className="mt-4 text-[clamp(1.85rem,3.2vw,2.5rem)] leading-[1.08] tracking-[-0.02em]"
+                  style={{ fontFamily: "var(--font-display)", textWrap: "balance" }}
+                >
+                  A voice agent that never lets a call go unanswered.
+                </h2>
+                <p className="mt-6 max-w-md leading-7 text-[var(--c-muted)]">
+                  Built on Retell AI — answers, qualifies, and collects lead details while
+                  your team stays focused on the work in front of them.
+                </p>
+                <ul className="mt-8 space-y-2.5">
+                  {voiceAiPoints.map((point) => (
+                    <li
+                      key={point}
+                      className="flex items-center gap-3 text-sm text-[var(--c-ink)]"
+                    >
+                      <span
+                        className="text-[var(--c-muted)]"
+                        style={{ fontFamily: "var(--font-mono)" }}
+                      >
+                        &gt;
+                      </span>
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="border-t border-[var(--c-line)] bg-[var(--c-surface)] p-4 sm:border-l sm:border-t-0 sm:p-6">
+                <div className="overflow-hidden border border-[var(--c-line)] bg-white">
+                  <iframe
+                    className="h-[560px] w-full bg-white"
+                    src={voiceAiUrl}
+                    title="Retell Voice AI agent demo"
+                    allow="microphone; autoplay; clipboard-write"
+                  />
+                </div>
+                <p className="mt-3 text-xs text-[var(--c-muted)]">
+                  Live demo — this widget streams audio; if you can&apos;t use audio right now,
+                  email me and I&apos;ll send a recorded walkthrough instead.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Skills */}
+        <section className="border-t border-[var(--c-line)] px-6 py-20 sm:px-10 sm:py-28">
+          <div className="mx-auto max-w-6xl">
+            <h2
+              className="reveal mb-10 text-[clamp(2rem,3.6vw,3rem)] tracking-[-0.02em]"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              Toolkit
+            </h2>
+            <StaggerGroup className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {Object.entries(skills).map(([group, items], i) => (
+                <div
+                  key={group}
+                  className="stagger-item border border-[var(--c-line)] p-6"
+                  style={{ "--i": i } as React.CSSProperties}
+                >
+                  <p
+                    className="text-xs text-[var(--c-muted)]"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    {`// ${group.toLowerCase()}`}
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
+                    {items.map((item) => (
+                      <span
+                        key={item}
+                        className="text-sm text-[var(--c-ink)]"
+                        style={{ fontFamily: "var(--font-mono)" }}
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </StaggerGroup>
+          </div>
+        </section>
+
+        {/* Client feedback */}
+        <section className="border-t border-[var(--c-line)] bg-[var(--c-surface)] py-20 sm:py-28">
+          <div className="mx-auto max-w-6xl px-6 sm:px-10">
+            <h2
+              className="reveal mb-10 text-[clamp(2rem,3.6vw,3rem)] tracking-[-0.02em]"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              What clients say
+            </h2>
+          </div>
+          <div
+            className="overflow-hidden"
+            style={{
+              maskImage:
+                "linear-gradient(to right, transparent, black 6%, black 94%, transparent)",
+              WebkitMaskImage:
+                "linear-gradient(to right, transparent, black 6%, black 94%, transparent)",
+            }}
+          >
+            <div className="marquee-track flex w-max gap-4 px-6 sm:px-10">
+              {[...testimonials, ...testimonials].map((t, i) => (
+                <figure
+                  key={`${t.name}-${i}`}
+                  aria-hidden={i >= testimonials.length}
+                  className="flex w-[320px] shrink-0 flex-col justify-between gap-6 border border-dashed border-[var(--c-line)] bg-[var(--c-bg)] p-6"
+                >
+                  <blockquote className="text-base leading-7 text-[var(--c-muted)]">
+                    &ldquo;{t.quote}&rdquo;
+                  </blockquote>
+                  <figcaption className="text-sm">
+                    <span className="block text-[var(--c-ink)]">{t.name}</span>
+                    <span
+                      className="text-[var(--c-muted)]"
+                      style={{ fontFamily: "var(--font-mono)" }}
+                    >
+                      {t.business}
+                    </span>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Contact */}
+        <section
+          id="contact"
+          className="scroll-mt-20 border-t border-[var(--c-line)] bg-[var(--c-surface)] px-6 py-20 sm:px-10 sm:py-28"
+        >
+          <div className="reveal mx-auto flex max-w-6xl flex-col justify-between gap-8 md:flex-row md:items-end">
             <div>
-              <p className="text-sm font-medium text-black/45">GoHighLevel systems</p>
-              <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-5xl">
-                Automations built for local growth.
+              <p
+                className="text-xs text-[var(--c-muted)]"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                contact.init()
+              </p>
+              <h2
+                className="mt-4 max-w-2xl text-[clamp(2rem,4.2vw,3.5rem)] leading-[1.05] tracking-[-0.02em]"
+                style={{ fontFamily: "var(--font-display)", textWrap: "balance" }}
+              >
+                Build the workflow once.
               </h2>
             </div>
-            <p className="max-w-2xl text-lg leading-8 text-black/56">
-              Practical workflows for service businesses, clinics, agencies, real estate teams, home services, and
-              local operators who need more booked conversations without more manual admin.
-            </p>
-          </div>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {ghlAutomations.map((automation) => (
-              <article
-                className="rounded-[1.5rem] border border-black/[0.08] bg-[#fbfbfd] p-6 transition duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-[0_24px_80px_rgba(0,0,0,0.07)]"
-                key={automation.name}
-              >
-                <p className="mb-8 w-fit rounded-full bg-white px-3 py-1 text-xs text-black/45">
-                  {automation.outcome}
-                </p>
-                <h3 className="text-xl font-semibold tracking-tight">{automation.name}</h3>
-                <p className="mt-3 text-sm leading-6 text-black/52">{automation.detail}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="projects" className="scroll-mt-20 border-t border-black/[0.06] bg-white px-6 py-24">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-10 flex items-end justify-between gap-6">
-            <h2 className="text-3xl font-semibold tracking-tight sm:text-5xl">Projects</h2>
-            <p className="hidden text-sm text-black/45 sm:block">Selected automation builds</p>
-          </div>
-          <div className="grid gap-4 md:grid-cols-3">
-            {projects.map((project) => (
-              <article
-                className="rounded-[1.5rem] border border-black/[0.08] bg-[#fbfbfd] p-6 transition duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-[0_24px_80px_rgba(0,0,0,0.07)]"
-                key={project.name}
-              >
-                <p className="mb-8 w-fit rounded-full bg-white px-3 py-1 text-xs text-black/45">
-                  {project.result}
-                </p>
-                <p className="text-xl font-semibold tracking-tight">{project.name}</p>
-                <p className="mt-3 text-sm leading-6 text-black/52">{project.detail}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="voice-ai" className="scroll-mt-20 px-6 py-24">
-        <div className="mx-auto grid max-w-6xl overflow-hidden rounded-[2rem] bg-black text-white lg:grid-cols-[1.05fr_0.95fr]">
-          <div className="p-8 sm:p-12">
-            <p className="text-sm text-white/45">Featured build</p>
-            <h2 className="mt-4 max-w-2xl text-4xl font-semibold tracking-tight sm:text-6xl">
-              Voice AI agent for instant conversations.
-            </h2>
-            <p className="mt-6 max-w-xl text-lg leading-8 text-white/58">
-              A Retell AI voice agent that can answer, qualify, and collect lead details while your team stays focused.
-            </p>
             <a
-              className="mt-10 inline-flex rounded-full bg-white px-6 py-3 text-sm font-medium text-black transition duration-300 hover:-translate-y-0.5 hover:bg-white/88"
-              href={voiceAiUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={`mailto:${contactEmail}`}
+              className="w-fit rounded-[2px] bg-[var(--c-primary)] px-6 py-3.5 text-sm font-medium text-[var(--c-primary-ink)] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5 hover:shadow-[0_14px_36px_-12px_var(--c-primary)] active:scale-95"
             >
-              Open in new tab
+              {contactEmail}
             </a>
           </div>
-          <div className="border-t border-white/10 bg-white/[0.04] p-4 sm:p-6 lg:border-l lg:border-t-0">
-            <div className="overflow-hidden rounded-[1.5rem] border border-white/10 bg-white">
-              <iframe
-                className="h-[620px] w-full bg-white"
-                src={voiceAiUrl}
-                title="Retell Voice AI agent demo"
-                allow="microphone; autoplay; clipboard-write"
-              />
-            </div>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              {["Answers missed calls", "Qualifies new leads", "Sends clean CRM notes", "Works after hours"].map(
-                (item) => (
-                  <div className="flex items-center justify-between rounded-2xl bg-white/[0.08] p-4" key={item}>
-                    <span className="text-sm text-white/72">{item}</span>
-                    <span className="h-2 w-2 rounded-full bg-white" />
-                  </div>
-                ),
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="skills" className="px-6 py-24">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="text-3xl font-semibold tracking-tight sm:text-5xl">Skills</h2>
-          <div className="mt-10 flex flex-wrap gap-3">
-            {skills.map((skill) => (
-              <span
-                className="rounded-full border border-black/[0.08] bg-white px-5 py-3 text-sm text-black/70 shadow-[0_10px_30px_rgba(0,0,0,0.03)] transition duration-300 hover:-translate-y-0.5 hover:text-black"
-                key={skill}
-              >
-                {skill}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="contact" className="bg-black px-6 py-24 text-white">
-        <div className="mx-auto flex max-w-6xl flex-col justify-between gap-10 md:flex-row md:items-end">
-          <div>
-            <p className="text-sm text-white/45">Contact</p>
-            <h2 className="mt-4 max-w-2xl text-4xl font-semibold tracking-tight sm:text-6xl">
-              Build the workflow once.
-            </h2>
-          </div>
-          <a
-            className="w-fit rounded-full bg-white px-6 py-3 text-sm font-medium text-black transition duration-300 hover:-translate-y-0.5 hover:bg-white/88"
-            href="mailto:mark@example.com"
-          >
-            mark@example.com
-          </a>
-        </div>
-      </section>
-    </main>
+        </section>
+      </main>
+    </div>
   );
 }
