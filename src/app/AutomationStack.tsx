@@ -9,7 +9,10 @@ type Automation = {
   outcome: string;
 };
 
-const ADVANCE_THRESHOLD = 70;
+// Scroll distance (in vh) allotted per card-to-card transition. Total
+// pinned scroll room scales with automations.length so adding/removing
+// cards keeps the same pacing per card.
+const SEGMENT_VH = 70;
 
 export function AutomationStack({
   automations,
@@ -21,110 +24,54 @@ export function AutomationStack({
   subtitle: string;
 }) {
   const stageRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const activeIndexRef = useRef(0);
-  useEffect(() => {
-    activeIndexRef.current = activeIndex;
-  }, [activeIndex]);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const stage = stageRef.current;
     if (!stage) return;
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const cooldownMs = reduceMotion ? 0 : 500;
+    const target = { current: 0 };
+    const smoothed = { current: 0 };
 
-    let accum = 0;
-    let cooling = false;
-    let touchStartY = 0;
-
-    // Zone check uses the CURRENT (pre-scroll) geometry, with a margin
-    // before the true lock point. A single wheel/touch event carries
-    // whatever delta the input device produced — sometimes large — so we
-    // start intercepting a bit early and forcibly snap the document to
-    // the exact locked frame, rather than trusting native scroll to land
-    // on it. That guarantees the section can't be scrolled past in one
-    // big jump.
-    const ENTRY_MARGIN = 500;
-
-    function zoneState() {
+    // Progress is derived from how far the page has scrolled through this
+    // section's own pinned height — never intercepted or force-scrolled,
+    // so the user can always scroll straight past. A lerp (skipped under
+    // reduced motion) smooths the raw scroll signal instead of relying on
+    // a CSS transition, which would otherwise fight this per-frame update.
+    function computeTarget() {
       const rect = stage!.getBoundingClientRect();
-      const notYetVisible = rect.top > ENTRY_MARGIN;
-      const fullyPassed = rect.bottom < 0;
-      return { rect, notYetVisible, fullyPassed };
+      const scrollable = rect.height - window.innerHeight;
+      if (scrollable <= 0) return;
+      const consumed = Math.min(Math.max(-rect.top, 0), scrollable);
+      target.current = (consumed / scrollable) * (automations.length - 1);
     }
 
-    function lockTo(rect: DOMRect) {
-      const target = Math.round(window.scrollY + rect.top);
-      if (Math.abs(window.scrollY - target) > 0.5) {
-        window.scrollTo(0, target);
-      }
+    computeTarget();
+    window.addEventListener("scroll", computeTarget, { passive: true });
+    window.addEventListener("resize", computeTarget);
+
+    let raf = 0;
+    function tick() {
+      smoothed.current += (target.current - smoothed.current) * (reduceMotion ? 1 : 0.12);
+      setProgress(smoothed.current);
+      raf = requestAnimationFrame(tick);
     }
+    raf = requestAnimationFrame(tick);
 
-    function step(dir: 1 | -1) {
-      if (cooling) return;
-      const atStart = activeIndexRef.current === 0;
-      const atEnd = activeIndexRef.current === automations.length - 1;
-      if ((dir === 1 && atEnd) || (dir === -1 && atStart)) return;
-      setActiveIndex((idx) => Math.min(automations.length - 1, Math.max(0, idx + dir)));
-      cooling = true;
-      window.setTimeout(() => {
-        cooling = false;
-      }, cooldownMs);
-    }
-
-    function onWheel(e: WheelEvent) {
-      const { rect, notYetVisible, fullyPassed } = zoneState();
-      if (notYetVisible || fullyPassed) return;
-
-      const atStart = activeIndexRef.current === 0;
-      const atEnd = activeIndexRef.current === automations.length - 1;
-      if (atEnd && e.deltaY > 0) return;
-      if (atStart && e.deltaY < 0) return;
-
-      e.preventDefault();
-      lockTo(rect);
-      accum += e.deltaY;
-      if (Math.abs(accum) >= ADVANCE_THRESHOLD) {
-        step(accum > 0 ? 1 : -1);
-        accum = 0;
-      }
-    }
-
-    function onTouchStart(e: TouchEvent) {
-      touchStartY = e.touches[0].clientY;
-    }
-
-    function onTouchMove(e: TouchEvent) {
-      const { rect, notYetVisible, fullyPassed } = zoneState();
-      if (notYetVisible || fullyPassed) return;
-
-      const dy = touchStartY - e.touches[0].clientY;
-      const atStart = activeIndexRef.current === 0;
-      const atEnd = activeIndexRef.current === automations.length - 1;
-      if (atEnd && dy > 0) return;
-      if (atStart && dy < 0) return;
-
-      e.preventDefault();
-      lockTo(rect);
-      if (Math.abs(dy) >= ADVANCE_THRESHOLD) {
-        step(dy > 0 ? 1 : -1);
-        touchStartY = e.touches[0].clientY;
-      }
-    }
-
-    window.addEventListener("wheel", onWheel, { passive: false });
-    window.addEventListener("touchstart", onTouchStart, { passive: true });
-    window.addEventListener("touchmove", onTouchMove, { passive: false });
     return () => {
-      window.removeEventListener("wheel", onWheel);
-      window.removeEventListener("touchstart", onTouchStart);
-      window.removeEventListener("touchmove", onTouchMove);
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", computeTarget);
+      window.removeEventListener("resize", computeTarget);
     };
   }, [automations.length]);
 
   return (
-    <div ref={stageRef} className="relative" style={{ height: "calc(100vh + 500px)" }}>
+    <div
+      ref={stageRef}
+      className="relative"
+      style={{ height: `calc(100vh + ${(automations.length - 1) * SEGMENT_VH}vh)` }}
+    >
       <div className="sticky top-0 flex h-screen flex-col justify-start pt-24 sm:pt-28">
         <div className="mx-auto w-full max-w-6xl px-6 sm:px-10">
           <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
@@ -138,26 +85,32 @@ export function AutomationStack({
           </div>
           <div className="relative" style={{ height: "min(58vh, 540px)" }}>
             {automations.map((automation, i) => {
-              const offset = i - activeIndex;
+              const offset = i - progress;
               const isPast = offset < 0;
               const isFuture = offset > 0;
+              // Continuous on both sides of 0 (no branch on an exact
+              // match, since offset is now a float that rarely lands on
+              // an integer). Both curves reach 0 well before |offset|
+              // hits 1: since the incoming card's own top z-index layer
+              // is itself translucent mid-fade, an outgoing card left at
+              // high opacity underneath it bleeds through as visible
+              // double-exposed text, not just a hidden lower layer.
+              const opacity = isFuture
+                ? Math.max(0, 1 - offset * 1.6)
+                : Math.max(0, 1 - Math.abs(offset) * 2);
               const style: React.CSSProperties = {
-                zIndex: 100 - Math.abs(offset),
+                zIndex: 100 - Math.round(Math.abs(offset) * 10),
                 transform: isPast
                   ? `translateY(${Math.max(offset, -3) * 14}px) scale(${1 + Math.max(offset, -3) * 0.02})`
                   : isFuture
                     ? `translateY(${Math.min(offset, 2) * 26}px) scale(${1 - Math.min(offset, 2) * 0.03})`
                     : "translateY(0) scale(1)",
-                opacity: offset === 0 ? 1 : isPast ? Math.max(0, 0.55 - Math.abs(offset) * 0.25) : 0,
-                pointerEvents: offset === 0 ? "auto" : "none",
+                opacity,
+                pointerEvents: Math.abs(offset) < 0.5 ? "auto" : "none",
               };
               return (
-                <div
-                  key={automation.name}
-                  className="absolute inset-x-0 top-8 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
-                  style={style}
-                >
-                  <div className="relative overflow-hidden border border-[var(--c-line)] bg-[var(--c-bg)] p-8 shadow-[0_30px_60px_-32px_rgba(20,40,30,0.35)] sm:p-12">
+                <div key={automation.name} className="absolute inset-x-0 top-8" style={style}>
+                  <div className="relative overflow-hidden border border-[var(--c-line)] bg-[var(--c-bg)] p-8 sm:p-12">
                     <span
                       aria-hidden="true"
                       className="pointer-events-none absolute -right-4 -top-10 select-none text-[9rem] leading-none text-[var(--c-surface)] sm:text-[12rem]"
@@ -222,8 +175,8 @@ export function AutomationStack({
                 aria-hidden="true"
                 className="h-1 rounded-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
                 style={{
-                  width: i === activeIndex ? 28 : 8,
-                  backgroundColor: i === activeIndex ? "var(--c-primary)" : "var(--c-line)",
+                  width: i === Math.round(progress) ? 28 : 8,
+                  backgroundColor: i === Math.round(progress) ? "var(--c-primary)" : "var(--c-line)",
                 }}
               />
             ))}

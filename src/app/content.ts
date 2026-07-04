@@ -96,6 +96,8 @@ export const skills = {
     "Email & SMS follow-up",
     "Webhook integrations",
     "API connections",
+  ],
+  Operations: [
     "Form automation",
     "Client onboarding flows",
     "AI-powered workflows",

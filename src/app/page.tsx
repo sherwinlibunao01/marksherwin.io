@@ -1,5 +1,6 @@
 import { Space_Grotesk, Inter, IBM_Plex_Mono } from "next/font/google";
 import { AutomationStack } from "./AutomationStack";
+import { MobileNav } from "./MobileNav";
 import { MouseGlow } from "./MouseGlow";
 import { SignalPulses } from "./SignalPulses";
 import { StaggerGroup } from "./StaggerGroup";
@@ -87,6 +88,7 @@ export default function Home() {
                 </a>
               ))}
             </div>
+            <MobileNav nav={nav} />
             <a
               href="#contact"
               className="shrink-0 rounded-[2px] bg-[var(--c-primary)] px-4 py-2 text-[var(--c-primary-ink)] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-px hover:shadow-[0_10px_30px_-10px_var(--c-primary)] active:scale-95"
@@ -133,7 +135,7 @@ export default function Home() {
                   href="#contact"
                   className="rounded-[2px] bg-[var(--c-primary)] px-6 py-3.5 text-sm font-medium text-[var(--c-primary-ink)] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5 hover:shadow-[0_14px_36px_-12px_var(--c-primary)] active:scale-95"
                 >
-                  Book a call
+                  Email me
                 </a>
                 <a
                   href="#voice-ai"
@@ -194,10 +196,10 @@ export default function Home() {
                   className="flex items-center justify-between border-b border-[var(--c-line)] px-4 py-2.5 text-xs text-[var(--c-muted)]"
                   style={{ fontFamily: "var(--font-mono)" }}
                 >
-                  <span>metrics.log</span>
+                  <span>targets.log</span>
                   <span className="inline-flex items-center gap-1.5">
                     <span className="status-dot inline-flex h-1.5 w-1.5 rounded-full bg-[var(--c-primary)] text-[var(--c-primary)]" />
-                    live
+                    by design
                   </span>
                 </div>
                 <div className="divide-y divide-[var(--c-line)]">
