@@ -1,21 +1,3 @@
-export const projects = [
-  {
-    name: "Lead response engine",
-    detail: "New leads routed, tagged, and followed up before they go cold.",
-    result: "Reply in under 60 seconds",
-  },
-  {
-    name: "Booking automation",
-    detail: "Forms, calendars, reminders, and pipeline stages connected end to end.",
-    result: "Fewer missed appointments",
-  },
-  {
-    name: "AI client intake",
-    detail: "Voice AI captures details, qualifies leads, and sends clean notes to the CRM.",
-    result: "24/7 lead capture",
-  },
-];
-
 export const outcomes = [
   { value: "24/7", label: "lead capture" },
   { value: "<60s", label: "speed to lead" },
@@ -62,31 +44,37 @@ export const howItWorks = [
 export const ghlAutomations = [
   {
     name: "Missed call text back",
+    problem: "A ringing phone nobody answers is a lead calling your competitor next.",
     detail: "Instant SMS replies when a customer calls and no one answers.",
     outcome: "Recover lost leads",
   },
   {
     name: "Speed-to-lead follow-up",
+    problem: "Inquiries that sit in an inbox for hours have already gone cold.",
     detail: "New inquiries get tagged, assigned, and contacted automatically.",
     outcome: "Book while interest is hot",
   },
   {
     name: "Appointment reminders",
+    problem: "Unconfirmed bookings quietly turn into empty slots on the calendar.",
     detail: "SMS and email reminders before visits, calls, estimates, or consultations.",
     outcome: "Reduce no-shows",
   },
   {
     name: "Review generation",
+    problem: "Happy customers almost never leave a review unless someone actually asks.",
     detail: "Happy customers receive clean review requests after the job is completed.",
     outcome: "Grow local trust",
   },
   {
     name: "Lead reactivation",
+    problem: "Old leads and past customers get forgotten the moment the pipeline moves on.",
     detail: "Old leads and past customers get smart follow-up campaigns.",
     outcome: "Create repeat revenue",
   },
   {
     name: "Pipeline automation",
+    problem: "Deals stall the moment moving them forward depends on someone remembering to.",
     detail: "Deals move through stages with tasks, notifications, and handoffs.",
     outcome: "Stay organized",
   },
@@ -111,6 +99,15 @@ export const skills = {
     "Form automation",
     "Client onboarding flows",
     "AI-powered workflows",
+    "A2P-compliant SMS",
+    "Reputation management",
+  ],
+  Industries: [
+    "Chiropractic clinics",
+    "SaaS agencies",
+    "Marketing agencies",
+    "Local businesses",
+    "Healthcare practices",
   ],
 };
 
@@ -126,23 +123,35 @@ export const voiceAiPoints = [
 
 export const contactEmail = "sherwinlibunao01@gmail.com";
 export const fullName = "Mark Sherwin Libunao";
+export const linkedinUrl = "https://www.linkedin.com/in/marksherwinghl/";
+export const facebookUrl = "https://www.facebook.com/kram.sherwin/";
 
-// PLACEHOLDER — replace with real client feedback before shipping.
-// Each entry: the client's own words, their name, and their business/industry.
-export const testimonials = [
+// REVIEW — pricing/timeline/support policy are reasonable defaults, not
+// confirmed specifics. Edit to match how you actually work before shipping.
+export const faqs = [
   {
-    quote: "Add a real client quote here — what changed for their business, in their words.",
-    name: "Client name",
-    business: "Business / industry",
+    question: "Do I need GoHighLevel already set up?",
+    answer:
+      "No — I can set up a sub-account from scratch, or build inside what you already have. Either way you end up with one connected system instead of a patchwork of tools.",
   },
   {
-    quote: "Add a real client quote here — what changed for their business, in their words.",
-    name: "Client name",
-    business: "Business / industry",
+    question: "How long does a typical build take?",
+    answer:
+      "Depends on scope — a single funnel or follow-up workflow usually ships in one to two weeks. You'll get a clear timeline before any work starts, not an open-ended estimate.",
   },
   {
-    quote: "Add a real client quote here — what changed for their business, in their words.",
-    name: "Client name",
-    business: "Business / industry",
+    question: "How is pricing structured?",
+    answer:
+      "Scoped and agreed before work starts, so you know the cost upfront — no open-ended hourly billing or surprise invoices partway through a build.",
+  },
+  {
+    question: "What do I get once the build is done?",
+    answer:
+      "A working system plus a walkthrough of how it's wired together, so your team isn't dependent on me to understand it. Ongoing support is available if you want it, never required.",
+  },
+  {
+    question: "Can you work with tools besides GoHighLevel?",
+    answer:
+      "Yes — Zapier, n8n, custom webhooks, and direct API connections tie in whatever you're already using rather than forcing a rebuild.",
   },
 ];

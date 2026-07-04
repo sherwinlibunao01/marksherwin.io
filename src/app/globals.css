@@ -120,31 +120,6 @@ html {
   }
 }
 
-/* Feedback marquee: continuous scroll, pauses on hover/focus so it's
-   readable, and stops entirely (falling back to a static row) under
-   reduced motion. The list is duplicated in the DOM to loop seamlessly;
-   the duplicate is aria-hidden. */
-.marquee-track {
-  animation: marquee-scroll 36s linear infinite;
-}
-.marquee-track:hover,
-.marquee-track:focus-within {
-  animation-play-state: paused;
-}
-@media (prefers-reduced-motion: reduce) {
-  .marquee-track {
-    animation: none;
-  }
-}
-@keyframes marquee-scroll {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
 /* Scroll-driven reveal: progressive enhancement only. Elements are fully
    visible by default; supporting browsers additionally fade/lift them in
    as they cross the viewport. Unsupported browsers and reduced-motion
@@ -298,6 +273,48 @@ html {
 @keyframes trace-draw {
   to {
     transform: scaleX(1);
+  }
+}
+
+/* Ignition surge: a single "system power-on" ripple that fires once on
+   first paint, radiating from behind the hero's status indicator — the
+   same corner where "STATUS: ACCEPTING NEW BUILDS" boots in. Reinforces
+   the boot metaphor as a one-time jolt rather than a looping effect.
+   Pure overlay: never gates content, degrades to fully invisible under
+   reduced motion (the animation itself lives inside the media query, so
+   without it the element keeps its base opacity: 0). */
+.ignition-surge {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ignition-surge {
+    background-image: radial-gradient(
+      circle at 13% 19%,
+      oklch(0.42 0.11 160 / 0.4),
+      oklch(0.42 0.11 160 / 0.14) 22%,
+      transparent 48%
+    );
+    animation: ignition-surge 1300ms var(--ease-out-expo) both;
+  }
+}
+@keyframes ignition-surge {
+  0% {
+    opacity: 0;
+    transform: scale(0.04);
+  }
+  14% {
+    opacity: 1;
+  }
+  55% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2.8);
   }
 }
 

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 type Automation = {
   name: string;
+  problem: string;
   detail: string;
   outcome: string;
 };
@@ -22,7 +23,9 @@ export function AutomationStack({
   const stageRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const activeIndexRef = useRef(0);
-  activeIndexRef.current = activeIndex;
+  useEffect(() => {
+    activeIndexRef.current = activeIndex;
+  }, [activeIndex]);
 
   useEffect(() => {
     const stage = stageRef.current;
@@ -133,7 +136,7 @@ export function AutomationStack({
             </h2>
             <p className="max-w-sm text-[var(--c-muted)]">{subtitle}</p>
           </div>
-          <div className="relative" style={{ height: "min(52vh, 480px)" }}>
+          <div className="relative" style={{ height: "min(58vh, 540px)" }}>
             {automations.map((automation, i) => {
               const offset = i - activeIndex;
               const isPast = offset < 0;
@@ -169,22 +172,41 @@ export function AutomationStack({
                       >
                         {String(i + 1).padStart(2, "0")} / {String(automations.length).padStart(2, "0")}
                       </span>
-                      <div className="max-w-2xl">
-                        <h3
-                          className="text-3xl tracking-[-0.02em] sm:text-5xl"
-                          style={{ fontFamily: "var(--font-display)" }}
-                        >
-                          {automation.name}
-                        </h3>
-                        <p className="mt-4 max-w-xl text-lg leading-8 text-[var(--c-muted)] sm:text-xl">
-                          {automation.detail}
-                        </p>
+                      <h3
+                        className="max-w-2xl text-3xl tracking-[-0.02em] sm:text-5xl"
+                        style={{ fontFamily: "var(--font-display)" }}
+                      >
+                        {automation.name}
+                      </h3>
+                      <div className="grid max-w-2xl gap-6 sm:grid-cols-2">
+                        <div>
+                          <p
+                            className="text-xs text-[var(--c-muted)]"
+                            style={{ fontFamily: "var(--font-mono)" }}
+                          >
+                            {"// the pain"}
+                          </p>
+                          <p className="mt-2 text-base leading-7 text-[var(--c-ink)] sm:text-lg">
+                            {automation.problem}
+                          </p>
+                        </div>
+                        <div>
+                          <p
+                            className="text-xs text-[var(--c-primary)]"
+                            style={{ fontFamily: "var(--font-mono)" }}
+                          >
+                            {"// the fix"}
+                          </p>
+                          <p className="mt-2 text-base leading-7 text-[var(--c-muted)] sm:text-lg">
+                            {automation.detail}
+                          </p>
+                        </div>
                       </div>
                       <span
                         className="w-fit rounded-[2px] bg-[var(--c-accent)] px-4 py-2 text-sm text-[var(--c-accent-ink)]"
                         style={{ fontFamily: "var(--font-mono)" }}
                       >
-                        {automation.outcome}
+                        &#8594; {automation.outcome}
                       </span>
                     </div>
                   </div>

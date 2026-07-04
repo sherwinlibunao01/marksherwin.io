@@ -1,18 +1,20 @@
 import { Space_Grotesk, Inter, IBM_Plex_Mono } from "next/font/google";
 import { AutomationStack } from "./AutomationStack";
 import { MouseGlow } from "./MouseGlow";
+import { SignalPulses } from "./SignalPulses";
 import { StaggerGroup } from "./StaggerGroup";
 import { DecodeValue } from "./DecodeValue";
 import {
   contactEmail,
+  facebookUrl,
+  faqs,
   fullName,
   ghlAutomations,
   howItWorks,
+  linkedinUrl,
   offers,
   outcomes,
-  projects,
   skills,
-  testimonials,
   voiceAiPoints,
   voiceAiUrl,
 } from "./content";
@@ -35,7 +37,6 @@ const plexMono = IBM_Plex_Mono({
 
 const nav = [
   { href: "#automations", label: "Automations" },
-  { href: "#work", label: "Work" },
   { href: "#voice-ai", label: "Voice AI" },
   { href: "#contact", label: "Contact" },
 ];
@@ -50,6 +51,8 @@ export default function Home() {
         <div className="field-glow" />
       </div>
       <div className="mouse-glow" aria-hidden="true" />
+      <div className="ignition-surge" aria-hidden="true" />
+      <SignalPulses />
       <MouseGlow />
 
       <a
@@ -142,36 +145,103 @@ export default function Home() {
             </div>
 
             <div
-              className="boot-in border border-[var(--c-line)] bg-[var(--c-surface)]"
+              className="boot-in flex flex-col gap-6"
               style={{ "--i": 2 } as React.CSSProperties}
             >
-              <div
-                className="flex items-center justify-between border-b border-[var(--c-line)] px-4 py-2.5 text-xs text-[var(--c-muted)]"
-                style={{ fontFamily: "var(--font-mono)" }}
-              >
-                <span>metrics.log</span>
-                <span className="inline-flex items-center gap-1.5">
-                  <span className="status-dot inline-flex h-1.5 w-1.5 rounded-full bg-[var(--c-primary)] text-[var(--c-primary)]" />
-                  live
-                </span>
-              </div>
-              <div className="divide-y divide-[var(--c-line)]">
-                {outcomes.map((outcome) => (
-                  <div
-                    key={outcome.label}
-                    className="flex items-center justify-between px-4 py-4"
+              <div className="border border-[var(--c-line)] bg-[var(--c-surface)]">
+                <div
+                  className="flex items-center justify-between border-b border-[var(--c-line)] px-4 py-2.5 text-xs text-[var(--c-muted)]"
+                  style={{ fontFamily: "var(--font-mono)" }}
+                >
+                  <span>profile.img</span>
+                  <span className="inline-flex items-center gap-1.5">
+                    <span className="status-dot inline-flex h-1.5 w-1.5 rounded-full bg-[var(--c-primary)] text-[var(--c-primary)]" />
+                    verified
+                  </span>
+                </div>
+                <div className="p-4">
+                  <img
+                    src="/mark-sherwin-field-portrait.jpg"
+                    alt={fullName}
+                    className="w-full border border-[var(--c-line)] object-cover"
+                  />
+                </div>
+                <div
+                  className="flex items-center gap-5 border-t border-[var(--c-line)] px-4 py-3 text-xs text-[var(--c-muted)]"
+                  style={{ fontFamily: "var(--font-mono)" }}
+                >
+                  <a
+                    href={linkedinUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="transition-colors duration-300 hover:text-[var(--c-primary)]"
                   >
-                    <span className="text-sm text-[var(--c-muted)]">{outcome.label}</span>
-                    <span
-                      className="text-lg tracking-tight"
-                      style={{ fontFamily: "var(--font-mono)" }}
+                    LinkedIn &#8599;
+                  </a>
+                  <a
+                    href={facebookUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="transition-colors duration-300 hover:text-[var(--c-primary)]"
+                  >
+                    Facebook &#8599;
+                  </a>
+                </div>
+              </div>
+
+              <div className="border border-[var(--c-line)] bg-[var(--c-surface)]">
+                <div
+                  className="flex items-center justify-between border-b border-[var(--c-line)] px-4 py-2.5 text-xs text-[var(--c-muted)]"
+                  style={{ fontFamily: "var(--font-mono)" }}
+                >
+                  <span>metrics.log</span>
+                  <span className="inline-flex items-center gap-1.5">
+                    <span className="status-dot inline-flex h-1.5 w-1.5 rounded-full bg-[var(--c-primary)] text-[var(--c-primary)]" />
+                    live
+                  </span>
+                </div>
+                <div className="divide-y divide-[var(--c-line)]">
+                  {outcomes.map((outcome) => (
+                    <div
+                      key={outcome.label}
+                      className="flex items-center justify-between px-4 py-4"
                     >
-                      <DecodeValue value={outcome.value} />
-                    </span>
-                  </div>
-                ))}
+                      <span className="text-sm text-[var(--c-muted)]">{outcome.label}</span>
+                      <span
+                        className="text-lg tracking-tight"
+                        style={{ fontFamily: "var(--font-mono)" }}
+                      >
+                        <DecodeValue value={outcome.value} />
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* About — the builder behind the systems. */}
+        <section className="border-t border-[var(--c-line)] px-6 py-20 sm:px-10 sm:py-28">
+          <div className="reveal mx-auto max-w-3xl">
+            <p
+              className="text-xs text-[var(--c-muted)]"
+              style={{ fontFamily: "var(--font-mono)" }}
+            >
+              about.init()
+            </p>
+            <h2
+              className="mt-4 text-[clamp(2rem,3.6vw,3rem)] leading-[1.05] tracking-[-0.02em] text-wrap-balance"
+              style={{ fontFamily: "var(--font-display)", textWrap: "balance" }}
+            >
+              The builder behind the systems.
+            </h2>
+            <p className="mt-6 max-w-xl text-pretty text-lg leading-8 text-[var(--c-muted)]">
+              I&apos;m {fullName} — I design and wire up the automation layer that
+              sits between a business&apos;s tools: GoHighLevel, Zapier, n8n,
+              custom APIs, and AI agents, working together as one system
+              instead of a pile of disconnected steps.
+            </p>
           </div>
         </section>
 
@@ -252,47 +322,6 @@ export default function Home() {
           />
         </section>
 
-        {/* Projects */}
-        <section
-          id="work"
-          className="scroll-mt-20 border-t border-[var(--c-line)] bg-[var(--c-surface)] px-6 py-20 sm:px-10 sm:py-28"
-        >
-          <div className="mx-auto max-w-6xl">
-            <h2
-              className="reveal mb-12 text-[clamp(2rem,3.6vw,3rem)] tracking-[-0.02em]"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
-              Selected builds
-            </h2>
-            <StaggerGroup className="grid gap-4 sm:grid-cols-3">
-              {projects.map((project, i) => (
-                <article
-                  key={project.name}
-                  className="stagger-item flex flex-col justify-between border border-[var(--c-line)] bg-[var(--c-bg)] p-6 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:border-[var(--c-primary)] hover:shadow-[0_20px_40px_-24px_var(--c-primary)]"
-                  style={{ "--i": i } as React.CSSProperties}
-                >
-                  <div>
-                    <p
-                      className="text-lg tracking-tight"
-                      style={{ fontFamily: "var(--font-display)" }}
-                    >
-                      {project.name}
-                    </p>
-                    <p className="mt-3 text-sm leading-6 text-[var(--c-muted)]">
-                      {project.detail}
-                    </p>
-                  </div>
-                  <p
-                    className="mt-8 text-xs text-[var(--c-muted)]"
-                    style={{ fontFamily: "var(--font-mono)" }}
-                  >
-                    &gt; {project.result}
-                  </p>
-                </article>
-              ))}
-            </StaggerGroup>
-          </div>
-        </section>
 
         {/* Voice AI */}
         <section id="voice-ai" className="scroll-mt-20 px-6 py-20 sm:px-10 sm:py-28">
@@ -394,46 +423,38 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Client feedback */}
-        <section className="border-t border-[var(--c-line)] bg-[var(--c-surface)] py-20 sm:py-28">
-          <div className="mx-auto max-w-6xl px-6 sm:px-10">
-            <h2
-              className="reveal mb-10 text-[clamp(2rem,3.6vw,3rem)] tracking-[-0.02em]"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
-              What clients say
-            </h2>
-          </div>
-          <div
-            className="overflow-hidden"
-            style={{
-              maskImage:
-                "linear-gradient(to right, transparent, black 6%, black 94%, transparent)",
-              WebkitMaskImage:
-                "linear-gradient(to right, transparent, black 6%, black 94%, transparent)",
-            }}
-          >
-            <div className="marquee-track flex w-max gap-4 px-6 sm:px-10">
-              {[...testimonials, ...testimonials].map((t, i) => (
-                <figure
-                  key={`${t.name}-${i}`}
-                  aria-hidden={i >= testimonials.length}
-                  className="flex w-[320px] shrink-0 flex-col justify-between gap-6 border border-dashed border-[var(--c-line)] bg-[var(--c-bg)] p-6"
-                >
-                  <blockquote className="text-base leading-7 text-[var(--c-muted)]">
-                    &ldquo;{t.quote}&rdquo;
-                  </blockquote>
-                  <figcaption className="text-sm">
-                    <span className="block text-[var(--c-ink)]">{t.name}</span>
-                    <span
-                      className="text-[var(--c-muted)]"
-                      style={{ fontFamily: "var(--font-mono)" }}
-                    >
-                      {t.business}
-                    </span>
-                  </figcaption>
-                </figure>
-              ))}
+        {/* FAQ */}
+        <section className="border-t border-[var(--c-line)] px-6 py-20 sm:px-10 sm:py-28">
+          <div className="mx-auto max-w-3xl">
+            <div className="reveal border border-[var(--c-line)] bg-[var(--c-surface)]">
+              <div
+                className="flex items-center justify-between border-b border-[var(--c-line)] px-4 py-2.5 text-xs text-[var(--c-muted)]"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                <span>faq.log</span>
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="status-dot inline-flex h-1.5 w-1.5 rounded-full bg-[var(--c-primary)] text-[var(--c-primary)]" />
+                  answered
+                </span>
+              </div>
+              <div className="divide-y divide-[var(--c-line)]">
+                {faqs.map((item) => (
+                  <details key={item.question} className="group px-5 py-5 sm:px-6">
+                    <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-base text-[var(--c-ink)] marker:content-none sm:text-lg">
+                      {item.question}
+                      <span
+                        aria-hidden="true"
+                        className="shrink-0 text-xl text-[var(--c-muted)] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-open:rotate-45"
+                      >
+                        +
+                      </span>
+                    </summary>
+                    <p className="mt-3 max-w-2xl text-sm leading-7 text-[var(--c-muted)] sm:text-base">
+                      {item.answer}
+                    </p>
+                  </details>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -467,6 +488,32 @@ export default function Home() {
           </div>
         </section>
       </main>
+
+      <footer className="relative z-10 border-t border-[var(--c-line)] px-6 py-8 sm:px-10">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-sm text-[var(--c-muted)] sm:flex-row">
+          <span>
+            &copy; {new Date().getFullYear()} {fullName}
+          </span>
+          <div className="flex items-center gap-6">
+            <a
+              href={linkedinUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors duration-300 hover:text-[var(--c-primary)]"
+            >
+              LinkedIn &#8599;
+            </a>
+            <a
+              href={facebookUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors duration-300 hover:text-[var(--c-primary)]"
+            >
+              Facebook &#8599;
+            </a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
