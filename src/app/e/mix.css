@@ -1,0 +1,176 @@
+/* Variant E — the A×B mix. Variant A's "Field" voice (Space Grotesk /
+   Inter / IBM Plex Mono, terminal panels, schematic grid backdrop, boot
+   sequence) carried on variant B's Live Wire spine. Reuses wire.css for
+   the wire/canvas/station mechanics; this sheet only remaps fonts and
+   adds the panel styles the mix needs. Scoped under .ew (which always
+   sits next to .bw on the root). */
+
+.ew {
+  font-family: var(--font-body), sans-serif;
+}
+.ew .bw-top,
+.ew .bw-k,
+.ew .bw-cue,
+.ew .bw-links,
+.ew .bw-foot,
+.ew .bw-list-out,
+.ew .bw-tools {
+  font-family: var(--font-mono), monospace;
+}
+.ew .bw-station h2 {
+  font-family: var(--font-display), sans-serif;
+}
+
+/* ——— hero: A's two-column boot layout with the wire's start node ——— */
+.ew-hero {
+  position: relative;
+  padding: 7.5rem clamp(1.25rem, 6vw, 6rem) 4rem;
+}
+.ew-hero-grid {
+  display: grid;
+  gap: 3rem;
+  max-width: 72rem;
+  margin: 0 auto;
+}
+@media (min-width: 1024px) {
+  .ew-hero-grid {
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 4rem;
+    align-items: start;
+  }
+}
+.ew-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.75rem;
+  color: var(--bw-muted);
+}
+.ew-hero h1 {
+  margin-top: 1.5rem;
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(2.5rem, 5.4vw, 4.5rem);
+  line-height: 1.03;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+.ew-hero .bw-sub {
+  margin-top: 1.75rem;
+}
+
+/* ——— terminal panels (A's visual signature) ——— */
+.ew-panel {
+  border: 1px solid var(--bw-line);
+  background: oklch(0.95 0.009 160);
+}
+.ew-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--bw-line);
+  padding: 0.625rem 1rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.75rem;
+  color: var(--bw-muted);
+}
+.ew-dot {
+  position: relative;
+  display: inline-flex;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 9999px;
+  background: var(--bw-pine);
+  color: var(--bw-pine);
+}
+.ew-panel-head .ew-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+.ew-hero-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.ew-panel-body {
+  padding: 1rem;
+}
+.ew-portrait {
+  width: 100%;
+  border: 1px solid var(--bw-line);
+  object-fit: cover;
+}
+.ew-panel-foot {
+  display: flex;
+  gap: 1.25rem;
+  border-top: 1px solid var(--bw-line);
+  padding: 0.75rem 1rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.75rem;
+}
+.ew-panel-foot a {
+  color: var(--bw-muted);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.ew-panel-foot a:hover {
+  color: var(--bw-pine);
+}
+.ew-metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-top: 1px solid var(--bw-line);
+}
+.ew-metric:first-of-type {
+  border-top: none;
+}
+.ew-metric span:first-child {
+  font-size: 0.875rem;
+  color: var(--bw-muted);
+}
+.ew-metric span:last-child {
+  font-family: var(--font-mono), monospace;
+  font-size: 1.1rem;
+  letter-spacing: -0.01em;
+}
+
+/* ——— station accents the mix adds on top of wire.css ——— */
+.ew-benefit {
+  margin-top: 0.75rem;
+  max-width: 44ch;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: var(--bw-ink);
+  font-weight: 500;
+}
+.ew-points {
+  margin-top: 1.2rem;
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.ew-points li {
+  display: flex;
+  gap: 0.75rem;
+  align-items: baseline;
+  font-size: 0.95rem;
+}
+.ew-points li::before {
+  content: ">";
+  font-family: var(--font-mono), monospace;
+  color: var(--bw-muted);
+}
+.ew .bw-orb {
+  border-color: var(--bw-line);
+}
+
+@media (max-width: 640px) {
+  .ew-hero {
+    padding-top: 6.5rem;
+  }
+}

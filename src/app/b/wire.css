@@ -1,0 +1,491 @@
+/* Variant B — "Live Wire". One continuous wire threads the page; scroll
+   drives a pulse (a lead) through it, igniting each station on arrival.
+   Every rule is scoped under .bw so this sheet can't leak into variant A
+   (globals.css is shared via the root layout). Same pine/clay brand
+   family as A, but a Committed strategy: the wire and its clay pulse
+   carry the identity, type does the rest. */
+
+.bw {
+  --bw-bg: oklch(0.99 0.004 160);
+  --bw-ink: oklch(0.2 0.03 160);
+  --bw-muted: oklch(0.46 0.025 160);
+  --bw-pine: oklch(0.42 0.11 160);
+  --bw-clay: oklch(0.72 0.13 55);
+  --bw-clay-ink: oklch(0.5 0.11 55);
+  --bw-line: oklch(0.9 0.012 160);
+  --bw-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+  min-height: 100vh;
+  background: var(--bw-bg);
+  color: var(--bw-ink);
+  font-family: var(--font-bw-display), sans-serif;
+  overflow-x: clip;
+}
+
+/* ——— wire canvas (behind everything) ——— */
+.bw-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.bw-canvas svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  overflow: visible;
+}
+.bw-route {
+  fill: none;
+  stroke: var(--bw-line);
+  stroke-width: 2;
+}
+.bw-draw {
+  fill: none;
+  stroke: var(--bw-pine);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+.bw-pulse {
+  position: absolute;
+  top: -7px;
+  left: -7px;
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle,
+    oklch(0.88 0.09 60),
+    var(--bw-clay) 55%,
+    oklch(0.72 0.13 55 / 0) 78%
+  );
+  box-shadow: 0 0 20px 5px oklch(0.72 0.13 55 / 0.5);
+  opacity: 0;
+  transition: opacity 0.5s var(--bw-ease);
+}
+.bw-active .bw-pulse {
+  opacity: 1;
+}
+
+.bw-top,
+.bw main,
+.bw-foot {
+  position: relative;
+  z-index: 1;
+}
+
+/* ——— header ——— */
+.bw-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.4rem clamp(1.25rem, 4vw, 3rem);
+  font-family: var(--font-bw-mono), monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+}
+.bw-top nav {
+  display: flex;
+  gap: 1.75rem;
+}
+.bw-top a {
+  color: var(--bw-muted);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.bw-top a:hover {
+  color: var(--bw-pine);
+}
+
+/* ——— hero ——— */
+.bw-hero {
+  position: relative;
+  min-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6rem clamp(1.25rem, 8vw, 8rem) 3rem;
+}
+.bw-node-start {
+  position: absolute;
+  left: clamp(0.75rem, 3.8vw, 3rem);
+  top: 0;
+  width: 2px;
+  height: 2px;
+}
+.bw-hero h1 {
+  font-size: clamp(2.9rem, 8.2vw, 6.4rem);
+  font-weight: 750;
+  line-height: 0.99;
+  letter-spacing: -0.035em;
+  max-width: 12ch;
+}
+.bw-hero h1 .bw-alt {
+  color: var(--bw-pine);
+}
+.bw-mask {
+  display: block;
+  overflow: hidden;
+}
+.bw-mask > span {
+  display: block;
+}
+.bw-sub {
+  margin-top: 2rem;
+  max-width: 46ch;
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  line-height: 1.6;
+  color: var(--bw-muted);
+  text-wrap: pretty;
+}
+.bw-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 2.4rem;
+}
+.bw-btn {
+  display: inline-block;
+  background: var(--bw-pine);
+  color: oklch(0.98 0.008 160);
+  padding: 0.95rem 1.7rem;
+  border-radius: 2px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    transform 0.45s var(--bw-ease),
+    box-shadow 0.45s var(--bw-ease);
+}
+.bw-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 34px -14px var(--bw-pine);
+}
+.bw-btn:active {
+  transform: scale(0.97);
+}
+.bw-ghost {
+  color: var(--bw-ink);
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  text-decoration-color: var(--bw-clay);
+  text-decoration-thickness: 2px;
+  transition: color 0.3s;
+}
+.bw-ghost:hover {
+  color: var(--bw-clay-ink);
+}
+.bw-cue {
+  margin-top: clamp(2.5rem, 7vh, 5rem);
+  font-family: var(--font-bw-mono), monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bw-muted);
+}
+
+/* ——— stations ——— */
+.bw-station {
+  position: relative;
+  width: fit-content;
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 38rem);
+  align-items: start;
+  min-height: 54vh;
+  align-content: center;
+  padding: 3rem clamp(1rem, 3vw, 3rem) 3rem 0;
+  margin-left: clamp(0.9rem, 8vw, 9rem);
+}
+.bw-right {
+  margin-left: auto;
+  margin-right: clamp(0.9rem, 6vw, 8rem);
+}
+.bw-node {
+  width: 13px;
+  height: 13px;
+  margin-top: 0.1rem;
+  border-radius: 9999px;
+  border: 2.5px solid var(--bw-pine);
+  background: var(--bw-bg);
+  transition:
+    background 0.45s var(--bw-ease),
+    border-color 0.45s var(--bw-ease),
+    box-shadow 0.45s var(--bw-ease);
+}
+.bw-lit .bw-node {
+  background: var(--bw-clay);
+  border-color: var(--bw-clay-ink);
+  box-shadow: 0 0 16px oklch(0.72 0.13 55 / 0.55);
+}
+.bw-k {
+  font-family: var(--font-bw-mono), monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bw-clay-ink);
+}
+.bw-station h2 {
+  margin-top: 0.9rem;
+  font-size: clamp(1.7rem, 3.6vw, 3rem);
+  font-weight: 650;
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+.bw-d {
+  margin-top: 0.9rem;
+  max-width: 44ch;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--bw-muted);
+  text-wrap: pretty;
+}
+
+/* Station choreography: dimmed until the pulse arrives, then ignites.
+   Only under .bw-active (JS running, motion allowed) — the no-JS and
+   reduced-motion default is fully visible. */
+@media (prefers-reduced-motion: no-preference) {
+  .bw-active [data-station] {
+    opacity: 0.26;
+    transform: translateY(14px);
+    transition:
+      opacity 0.7s var(--bw-ease),
+      transform 0.7s var(--bw-ease);
+  }
+  .bw-active [data-station].bw-lit {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ——— automations list (station 05) ——— */
+.bw-list {
+  margin-top: 1.6rem;
+  max-width: 38rem;
+  list-style: none;
+  padding: 0;
+}
+.bw-list li {
+  padding: 0.95rem 0;
+  border-top: 1px solid var(--bw-line);
+}
+.bw-list li:last-child {
+  border-bottom: 1px solid var(--bw-line);
+}
+.bw-list-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+}
+.bw-list-name {
+  font-weight: 600;
+  font-size: 1.02rem;
+  letter-spacing: -0.01em;
+}
+.bw-list-out {
+  font-family: var(--font-bw-mono), monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--bw-clay-ink);
+  white-space: nowrap;
+}
+.bw-list-d {
+  margin-top: 0.35rem;
+  max-width: 48ch;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--bw-muted);
+}
+
+/* ——— faq station ——— */
+.bw-faq {
+  margin-top: 1.6rem;
+  max-width: 40rem;
+  border-top: 1px solid var(--bw-line);
+}
+.bw-faq details {
+  border-bottom: 1px solid var(--bw-line);
+}
+.bw-faq summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 0;
+  cursor: pointer;
+  list-style: none;
+  font-weight: 500;
+  font-size: 1.02rem;
+}
+.bw-faq summary::-webkit-details-marker {
+  display: none;
+}
+.bw-plus {
+  color: var(--bw-muted);
+  font-size: 1.3rem;
+  line-height: 1;
+  transition: transform 0.3s var(--bw-ease);
+}
+.bw-faq details[open] .bw-plus {
+  transform: rotate(45deg);
+}
+.bw-faq details > p {
+  padding: 0 0 1.1rem;
+  max-width: 52ch;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--bw-muted);
+}
+
+/* ——— toolkit line (terminal) ——— */
+.bw-tools {
+  margin-top: 2.2rem;
+  max-width: 46ch;
+  font-family: var(--font-bw-mono), monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  line-height: 1.9;
+  color: var(--bw-muted);
+}
+
+/* ——— voice station ——— */
+.bw-voice .bw-orb {
+  margin-top: 1.6rem;
+  max-width: 30rem;
+  border: 1px solid var(--bw-line);
+  background: white;
+  padding: 0.75rem;
+}
+.bw-voice iframe {
+  display: block;
+  width: 100%;
+  height: 470px;
+  border: 0;
+  background: white;
+}
+.bw-fallback {
+  font-size: 0.85rem;
+}
+
+/* ——— terminal ——— */
+.bw-end {
+  min-height: 64vh;
+}
+.bw-endrow {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  margin-top: 1.4rem;
+}
+.bw-face {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 2px;
+  border: 1px solid var(--bw-line);
+}
+.bw-endrow .bw-d {
+  margin-top: 0;
+}
+.bw-links {
+  display: flex;
+  gap: 1.75rem;
+  margin-top: 1.6rem;
+  font-family: var(--font-bw-mono), monospace;
+  font-size: 0.78rem;
+}
+.bw-links a {
+  color: var(--bw-muted);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.bw-links a:hover {
+  color: var(--bw-pine);
+}
+
+/* ——— footer ——— */
+.bw-foot {
+  border-top: 1px solid var(--bw-line);
+  padding: 2.25rem clamp(1.25rem, 4vw, 3rem);
+  font-family: var(--font-bw-mono), monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  color: var(--bw-muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: space-between;
+}
+
+/* ——— load choreography (hero only; enhancement over visible default) ——— */
+@media (prefers-reduced-motion: no-preference) {
+  .bw-mask > span {
+    transform: translateY(112%);
+    animation: bw-rise 0.9s var(--bw-ease) forwards;
+  }
+  .bw-mask:nth-of-type(1) > span {
+    animation-delay: 0.12s;
+  }
+  .bw-mask:nth-of-type(2) > span {
+    animation-delay: 0.26s;
+  }
+  .bw-sub,
+  .bw-hero .bw-ctas,
+  .bw-cue {
+    opacity: 0;
+    animation: bw-fade-up 0.8s var(--bw-ease) forwards;
+  }
+  .bw-sub {
+    animation-delay: 0.55s;
+  }
+  .bw-hero .bw-ctas {
+    animation-delay: 0.7s;
+  }
+  .bw-cue {
+    animation-delay: 1.05s;
+  }
+}
+@keyframes bw-rise {
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes bw-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ——— small screens: wire hugs the left edge, stations stack ——— */
+@media (max-width: 640px) {
+  .bw-station,
+  .bw-right {
+    margin-left: 0.5rem;
+    margin-right: 0.75rem;
+    width: auto;
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+    min-height: 46vh;
+  }
+  .bw-hero {
+    min-height: 86vh;
+  }
+  .bw-voice iframe {
+    height: 420px;
+  }
+}
