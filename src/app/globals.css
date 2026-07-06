@@ -325,3 +325,241 @@ html {
   font-variant-numeric: tabular-nums;
 }
 
+/* Signal drop: the hand-off at the end of the hero boot sequence. Once
+   .boot-in settles (~970ms: last item's 270ms delay + 700ms duration),
+   a line of signal draws down the hero's left margin, a streak of light
+   travels along it, and its arrival ignites the seam into the section
+   below — the same "signal moving through the system" language as
+   SignalPulses/.ignition-surge, aimed downward once as a hand-off cue
+   rather than a looping ambient effect. Delays below are hand-tuned
+   against that ~970ms boot-in finish time, not derived from --i, because
+   this sequence has its own durations; if boot-in's timing changes,
+   revisit these.
+
+   All four pieces render via SignalDrop.tsx as plain (non-positioned)
+   siblings inside the hero <section>, so their `position: absolute`
+   resolves against that section's own box (full hero height / width),
+   not against each other. Invisible by default; only drawn inside the
+   no-preference query, so reduced-motion users see nothing rather than
+   a jump-cut mid-animation frame. */
+.signal-drop-line,
+.signal-drop-streak,
+.signal-drop-impact,
+.signal-seam {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+}
+.signal-drop-line {
+  left: clamp(0.35rem, 2.4vw, 1.1rem);
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--c-primary) 12%,
+    var(--c-primary) 88%,
+    transparent
+  );
+  transform-origin: top;
+  transform: scaleY(0);
+}
+.signal-drop-streak {
+  left: clamp(0.35rem, 2.4vw, 1.1rem);
+  top: -14px;
+  width: 5px;
+  height: 28px;
+  margin-left: -1.75px;
+  border-radius: 9999px;
+  background: linear-gradient(to bottom, transparent, var(--c-accent) 40%, var(--c-primary) 90%);
+  filter: blur(0.5px);
+}
+.signal-drop-impact {
+  left: clamp(0.35rem, 2.4vw, 1.1rem);
+  bottom: -2px;
+  width: 5px;
+  height: 5px;
+  margin-left: -1.5px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, oklch(0.88 0.07 60 / 0.9), var(--c-primary) 40%, transparent 72%);
+}
+.signal-seam {
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  transform: scaleX(0.06);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--c-primary) 20%,
+    var(--c-accent) 50%,
+    var(--c-primary) 80%,
+    transparent
+  );
+}
+@media (prefers-reduced-motion: no-preference) {
+  .signal-drop-line {
+    animation: signal-line-draw 640ms var(--ease-out-quart) 1000ms both;
+  }
+  /* linear, not eased: this travels a real ~1000px+ distance, and an
+     ease-out curve front-loads nearly all of that distance into the
+     first third of the duration (confirmed by scrubbing the animation
+     via getAnimations() during testing) — it read as teleport-then-crawl
+     rather than a travelling pulse. The other three below are also
+     linear because their keyframes already encode multi-stage pacing
+     (a fast attack + slower decay via 0%/~30%/100% stops); layering an
+     eased timing-function on top would re-distort each segment. Matches
+     .trace-line's existing linear scaleX draw elsewhere in this file. */
+  .signal-drop-streak {
+    animation: signal-streak-travel 760ms linear 1020ms both;
+  }
+  .signal-drop-impact {
+    animation: signal-impact 620ms linear 1760ms both;
+  }
+  .signal-seam {
+    animation: signal-seam-ignite 900ms linear 1860ms both;
+  }
+}
+@keyframes signal-line-draw {
+  to {
+    opacity: 0.45;
+    transform: scaleY(1);
+  }
+}
+@keyframes signal-streak-travel {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(var(--drop-h, 60vh));
+  }
+}
+@keyframes signal-impact {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(6);
+  }
+}
+@keyframes signal-seam-ignite {
+  0% {
+    opacity: 0;
+    transform: scaleX(0.06);
+  }
+  40% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scaleX(1);
+  }
+}
+
+/* Hero hand-off on scroll: as the visitor scrolls past the hero, its two
+   columns recede at different rates — the copy column rises and dims
+   faster than the panel column — so the hero departs in depth layers
+   instead of scrolling away as one flat block. Scroll-scrubbed (view()
+   exit range), so it reverses cleanly when scrolling back up. Lives on
+   dedicated wrapper elements, NOT on the .boot-in elements themselves:
+   both animations drive opacity/transform, and two active animations on
+   one element would have the scroll-driven one (permanently active at
+   progress 0) clobber the load-time entrance. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-exit-copy {
+      animation: hero-exit-copy linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 85%;
+    }
+    .hero-exit-panel {
+      animation: hero-exit-panel linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 85%;
+    }
+  }
+}
+@keyframes hero-exit-copy {
+  to {
+    opacity: 0;
+    transform: translateY(-56px);
+  }
+}
+@keyframes hero-exit-panel {
+  to {
+    opacity: 0;
+    transform: translateY(-22px);
+  }
+}
+
+/* Section seam: the hand-off cue the signal drop ignites once at the
+   hero/About boundary, promoted to the page's transition grammar. Each
+   marked section's top border wipes alight (same pine→clay gradient as
+   .signal-seam) as the visitor scrolls across it, then quiets once the
+   section is settled — crossing into a section reads as the signal
+   arriving there. Scroll-scrubbed and reversible; sits on top of the
+   section's real 1px border, which stays as the static fallback. */
+.section-seam {
+  position: relative;
+}
+.section-seam::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  pointer-events: none;
+  opacity: 0;
+  transform: scaleX(0.05);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--c-primary) 20%,
+    var(--c-accent) 50%,
+    var(--c-primary) 80%,
+    transparent
+  );
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .section-seam::before {
+      animation: seam-cross linear both;
+      animation-timeline: view();
+      animation-range: entry 25% cover 30%;
+    }
+  }
+}
+@keyframes seam-cross {
+  0% {
+    opacity: 0;
+    transform: scaleX(0.05);
+  }
+  45% {
+    opacity: 1;
+  }
+  80% {
+    transform: scaleX(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scaleX(1);
+  }
+}
+

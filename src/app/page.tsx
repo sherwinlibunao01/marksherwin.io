@@ -2,6 +2,7 @@ import { Space_Grotesk, Inter, IBM_Plex_Mono } from "next/font/google";
 import { AutomationStack } from "./AutomationStack";
 import { MobileNav } from "./MobileNav";
 import { MouseGlow } from "./MouseGlow";
+import { SignalDrop } from "./SignalDrop";
 import { SignalPulses } from "./SignalPulses";
 import { StaggerGroup } from "./StaggerGroup";
 import { DecodeValue } from "./DecodeValue";
@@ -102,9 +103,9 @@ export default function Home() {
       <main id="main" className="relative z-10">
         {/* Hero — boot sequence: status line, headline, subhead, CTAs,
             metrics panel stagger in on first load, not on scroll. */}
-        <section className="mx-auto max-w-6xl px-6 pb-14 pt-16 sm:px-10 sm:pt-24">
+        <section className="relative mx-auto max-w-6xl px-6 pb-14 pt-16 sm:px-10 sm:pt-24">
           <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16 lg:items-start">
-            <div>
+            <div className="hero-exit-copy">
               <p
                 className="boot-in inline-flex items-center gap-2.5 text-xs text-[var(--c-muted)]"
                 style={{ fontFamily: "var(--font-mono)", "--i": 0 } as React.CSSProperties}
@@ -117,15 +118,15 @@ export default function Home() {
                 className="boot-in mt-6 text-[clamp(2.5rem,5.6vw,4.75rem)] leading-[1.03] tracking-[-0.03em] text-wrap-balance"
                 style={{ fontFamily: "var(--font-display)", textWrap: "balance", "--i": 1 } as React.CSSProperties}
               >
-                Automation systems for businesses that hate dropped leads.
+                Zero dropped leads.
               </h1>
               <p
                 className="boot-in mt-7 max-w-xl text-pretty text-lg leading-8 text-[var(--c-muted)]"
                 style={{ textWrap: "pretty", "--i": 2 } as React.CSSProperties}
               >
-                GoHighLevel, Zapier, n8n, custom APIs, and AI agents wired into one working
-                system — from lean teams to enterprise operations, capture, qualify, and
-                book without adding headcount.
+                GoHighLevel, Zapier, n8n, custom APIs, and AI agents wired into
+                one working system. From lean teams to enterprise operations:
+                capture, qualify, and book without adding headcount.
               </p>
               <div
                 className="boot-in mt-9 flex flex-wrap items-center gap-4"
@@ -146,10 +147,11 @@ export default function Home() {
               </div>
             </div>
 
-            <div
-              className="boot-in flex flex-col gap-6"
-              style={{ "--i": 2 } as React.CSSProperties}
-            >
+            {/* Extra wrapper: .boot-in (load entrance) and .hero-exit-panel
+                (scroll exit) both animate opacity/transform, so they must
+                live on separate elements — see globals.css. */}
+            <div className="boot-in" style={{ "--i": 2 } as React.CSSProperties}>
+              <div className="hero-exit-panel flex flex-col gap-6">
               <div className="border border-[var(--c-line)] bg-[var(--c-surface)]">
                 <div
                   className="flex items-center justify-between border-b border-[var(--c-line)] px-4 py-2.5 text-xs text-[var(--c-muted)]"
@@ -219,18 +221,20 @@ export default function Home() {
                   ))}
                 </div>
               </div>
+              </div>
             </div>
           </div>
+          <SignalDrop />
         </section>
 
         {/* About — the builder behind the systems. */}
-        <section className="border-t border-[var(--c-line)] px-6 py-20 sm:px-10 sm:py-28">
+        <section className="section-seam border-t border-[var(--c-line)] px-6 py-20 sm:px-10 sm:py-28">
           <div className="reveal mx-auto max-w-3xl">
             <p
               className="text-xs text-[var(--c-muted)]"
               style={{ fontFamily: "var(--font-mono)" }}
             >
-              about.init()
+              <DecodeValue value="about.init()" />
             </p>
             <h2
               className="mt-4 text-[clamp(2rem,3.6vw,3rem)] leading-[1.05] tracking-[-0.02em] text-wrap-balance"
@@ -248,7 +252,7 @@ export default function Home() {
         </section>
 
         {/* How I help */}
-        <section className="border-t border-[var(--c-line)] bg-[var(--c-surface)] px-6 py-20 sm:px-10 sm:py-28">
+        <section className="section-seam border-t border-[var(--c-line)] bg-[var(--c-surface)] px-6 py-20 sm:px-10 sm:py-28">
           <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
             <h2
               className="reveal text-[clamp(2rem,3.6vw,3rem)] leading-[1.05] tracking-[-0.02em]"
@@ -387,7 +391,7 @@ export default function Home() {
         </section>
 
         {/* Skills */}
-        <section className="border-t border-[var(--c-line)] px-6 py-20 sm:px-10 sm:py-28">
+        <section className="section-seam border-t border-[var(--c-line)] px-6 py-20 sm:px-10 sm:py-28">
           <div className="mx-auto max-w-6xl">
             <h2
               className="reveal mb-10 text-[clamp(2rem,3.6vw,3rem)] tracking-[-0.02em]"
@@ -426,7 +430,7 @@ export default function Home() {
         </section>
 
         {/* FAQ */}
-        <section className="border-t border-[var(--c-line)] px-6 py-20 sm:px-10 sm:py-28">
+        <section className="section-seam border-t border-[var(--c-line)] px-6 py-20 sm:px-10 sm:py-28">
           <div className="mx-auto max-w-3xl">
             <div className="reveal border border-[var(--c-line)] bg-[var(--c-surface)]">
               <div
@@ -464,7 +468,7 @@ export default function Home() {
         {/* Contact */}
         <section
           id="contact"
-          className="scroll-mt-20 border-t border-[var(--c-line)] bg-[var(--c-surface)] px-6 py-20 sm:px-10 sm:py-28"
+          className="section-seam scroll-mt-20 border-t border-[var(--c-line)] bg-[var(--c-surface)] px-6 py-20 sm:px-10 sm:py-28"
         >
           <div className="reveal mx-auto flex max-w-6xl flex-col justify-between gap-8 md:flex-row md:items-end">
             <div>
@@ -472,7 +476,7 @@ export default function Home() {
                 className="text-xs text-[var(--c-muted)]"
                 style={{ fontFamily: "var(--font-mono)" }}
               >
-                contact.init()
+                <DecodeValue value="contact.init()" />
               </p>
               <h2
                 className="mt-4 max-w-2xl text-[clamp(2rem,4.2vw,3.5rem)] leading-[1.05] tracking-[-0.02em]"
