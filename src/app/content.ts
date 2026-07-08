@@ -113,6 +113,55 @@ export const skills = {
   ],
 };
 
+export const caseStudies = [
+  {
+    slug: "asap-plumbing",
+    ref: "case/asap-plumbing.log",
+    name: "ASAP Service Plumbing",
+    niche: "24/7 plumbing dispatch",
+    outcome: "unified command center",
+    built:
+      "Rebuilt their entire booking system around an AI voice agent that answers every inbound call around the clock, then wired a live dashboard joining GoHighLevel, Google Ads, and Zoho Books so a call, a lead, and a dollar spent never go untracked.",
+    result:
+      "Dispatch, the plumbers in the field, and the CEO all read the same real-time numbers from one screen. No missed calls, and no gap between what the ads cost and what the books show.",
+    feature: true,
+  },
+  {
+    slug: "viral-blueprint",
+    ref: "case/viral-blueprint.log",
+    name: "Viral Blueprint",
+    niche: "YouTube creator coaching",
+    outcome: "subscriptions up",
+    built:
+      "Designed their complete sales funnel from scratch, then wired automated nurture email sequences behind it to keep new leads warm long after they first opted in.",
+    result:
+      "Turned more cold traffic into paying subscribers for their flagship YouTube viral-growth coaching offer.",
+  },
+  {
+    slug: "linear-digital",
+    ref: "case/linear-digital.log",
+    name: "Linear Digital Solutions",
+    niche: "SaaS agency for local service businesses",
+    outcome: "instant-deploy snapshots",
+    built:
+      "Ran the agency's entire build pipeline, designing funnels tailored to each type of local business it took on, from home service companies to niche local brands, never a one-size-fits-all template.",
+    result:
+      "Packaged GoHighLevel snapshots with the automations already wired in, so onboarding a brand new type of business took a day instead of weeks of custom setup.",
+  },
+  {
+    slug: "expanded-collective",
+    ref: "case/expanded-collective.log",
+    name: "Expanded Collective",
+    niche: "Chiropractic clinic to SaaS agency",
+    outcome: "30+ clinics running",
+    built:
+      "Automated their entire chiropractic clinic first, intake through follow-up. Once it worked, the CEO decided to package the system and offer it to other chiropractic clinics.",
+    result:
+      "That decision grew into a full SaaS agency I now help run for 30+ chiropractic clinics, each handed a tailored, working snapshot covering automation, funnels, and their phone system from day one.",
+    feature: true,
+  },
+];
+
 export const voiceAiUrl =
   "https://agent.retellai.com/orb/agent_dd540600e9a86a7de5a9bdd7a6?token=be40d9a1c4ee510cc72a088bcc9f89d3";
 

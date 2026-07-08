@@ -5,6 +5,7 @@ import { DecodeValue } from "../DecodeValue";
 import { StaggerGroup } from "../StaggerGroup";
 import "./fd.css";
 import {
+  caseStudies,
   contactEmail,
   facebookUrl,
   faqs,
@@ -300,6 +301,65 @@ export default function VariantF() {
                 </li>
               ))}
             </ul>
+          </div>
+        </StaggerGroup>
+
+        <StaggerGroup className="fd-row section-seam" data-station="">
+          <div className="fd-rail">
+            <span className="fd-wnode" data-wire-node aria-hidden="true" />
+            <span className="fd-m fd-slam">
+              <span className="fd-num" style={{ "--i": 0 } as React.CSSProperties}>
+                4&times;
+              </span>
+            </span>
+            <span
+              className="fd-ref fd-soft"
+              style={{ "--i": 2 } as React.CSSProperties}
+            >
+              casefile.log
+            </span>
+          </div>
+          <div>
+            <span className="fd-m">
+              <h2 style={{ "--i": 1 } as React.CSSProperties}>
+                Proof, not promises.
+              </h2>
+            </span>
+            <p
+              className="fd-d fd-soft"
+              style={{ "--i": 2 } as React.CSSProperties}
+            >
+              Four systems I built from the ground up, still running in the
+              field today. No pull-quotes, no reviews to take on faith. Just
+              what shipped, and what changed because of it.
+            </p>
+            <div className="fd-cases">
+              {caseStudies.map((c, i) => (
+                <article
+                  key={c.slug}
+                  className={`fd-case stagger-item${c.feature ? " fd-case--feature" : ""}`}
+                  style={{ "--i": i + 3 } as React.CSSProperties}
+                >
+                  <span className="fd-case-num" aria-hidden="true">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div className="fd-case-head">
+                    <span className="fd-case-ref">{c.ref}</span>
+                    <span className="fd-case-outcome">{c.outcome}</span>
+                  </div>
+                  <h3>{c.name}</h3>
+                  <p className="fd-case-niche">{c.niche}</p>
+                  <p className="fd-case-line">
+                    <span className="fd-tag fd-tag-build">build</span>
+                    {c.built}
+                  </p>
+                  <p className="fd-case-line fd-case-result">
+                    <span className="fd-tag fd-tag-fix">result</span>
+                    {c.result}
+                  </p>
+                </article>
+              ))}
+            </div>
           </div>
         </StaggerGroup>
 

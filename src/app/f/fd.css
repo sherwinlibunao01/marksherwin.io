@@ -363,16 +363,16 @@
 .fd-cue {
   margin-top: 2.6rem;
   font-family: var(--font-mono), monospace;
-  font-size: 0.78rem;
+  font-size: 0.98rem;
   color: var(--c-muted);
 }
 /* "follow the lead": pencil-bold phrase tied to the clay pulse by an
-   inline dot and a hand-drawn scribble underline in the lead's color. */
+   inline dot and a bold hand-drawn chalk scribble underline. */
 .fd-cue-hl {
   position: relative;
   display: inline-block;
-  padding-bottom: 0.45rem;
-  font-weight: 500;
+  padding-bottom: 0.6rem;
+  font-weight: 600;
   color: var(--c-ink);
 }
 .fd-cue-dot {
@@ -386,17 +386,22 @@
 }
 .fd-scribble {
   position: absolute;
-  left: -2px;
-  right: -4px;
-  bottom: 0;
-  width: calc(100% + 6px);
-  height: 0.55rem;
+  left: -3px;
+  right: -5px;
+  bottom: -0.05rem;
+  width: calc(100% + 8px);
+  height: 0.9rem;
 }
 .fd-scribble path {
   fill: none;
-  stroke: oklch(0.72 0.13 55);
-  stroke-width: 1.6;
+  stroke: var(--c-ink);
+  stroke-width: 5.5;
   stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.fd-scribble path:last-child {
+  stroke-width: 4;
+  opacity: 0.7;
 }
 /* The scribble draws itself in once the boot sequence settles. */
 @media (prefers-reduced-motion: no-preference) {
@@ -572,6 +577,106 @@
   font-size: 0.62rem;
   padding: 0.06rem 0.35rem;
   margin-right: 0.5rem;
+}
+
+/* ——— past work / proof bento ———
+   Same terminal-panel signature as the hero's profile/targets panels
+   (mono ref header, ledger tags), not a generic icon+heading+text grid.
+   Two "feature" cards (ASAP Plumbing, Expanded Collective — the deepest
+   integration story and the biggest scale story) span full width and
+   bookend the two supporting cards, so the grid reads as a deliberate
+   composition rather than four uniform boxes. */
+.fd-cases {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(440px, 1fr));
+  gap: 1.75rem;
+  margin-top: 2rem;
+  max-width: 68rem;
+}
+.fd-case {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 1.75rem;
+  border: 1px solid var(--c-line);
+  background: var(--c-surface);
+  overflow: hidden;
+  transition:
+    transform 0.45s var(--ease-out-quart),
+    box-shadow 0.45s var(--ease-out-quart),
+    border-color 0.45s var(--ease-out-quart);
+}
+.fd-case:hover {
+  transform: translateY(-4px);
+  border-color: var(--c-primary);
+  box-shadow: 0 20px 44px -28px var(--c-primary);
+}
+.fd-case--feature {
+  grid-column: 1 / -1;
+}
+.fd-case-num {
+  position: absolute;
+  top: 0.75rem;
+  right: 1.25rem;
+  font-family: var(--font-display), sans-serif;
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--c-primary);
+  opacity: 0.1;
+  line-height: 1;
+  pointer-events: none;
+}
+.fd-case-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--c-line);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.7rem;
+}
+.fd-case-ref {
+  color: var(--c-muted);
+}
+.fd-case-outcome {
+  color: var(--c-primary);
+  white-space: nowrap;
+}
+.fd-case h3 {
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--c-ink);
+}
+.fd-case-niche {
+  margin-top: -0.55rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.72rem;
+  color: var(--c-muted);
+}
+.fd-case-line {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--c-muted);
+}
+.fd-case-line .fd-tag {
+  flex: none;
+  margin-right: 0;
+}
+.fd-case-line.fd-case-result {
+  font-weight: 500;
+  color: var(--c-ink);
+}
+.fd-tag-build {
+  color: var(--c-muted);
+  background: transparent;
+  border: 1px solid var(--c-line);
 }
 
 /* ——— voice row ——— */
