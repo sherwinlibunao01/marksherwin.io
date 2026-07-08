@@ -92,7 +92,7 @@
 }
 .fd-wnode {
   position: absolute;
-  left: calc(clamp(1.25rem, 6vw, 6rem) * -0.5 - 5px);
+  left: calc(clamp(1.25rem, 6vw, 6rem) * -0.22 - 2px);
   top: calc(clamp(3.2rem, 8vw, 7rem) * 0.45 - 5px);
   width: 10px;
   height: 10px;
@@ -876,7 +876,7 @@
     font-size: clamp(2.6rem, 12vw, 3.4rem);
   }
   .fd-wnode {
-    left: calc(1.25rem * -0.5 - 5px);
+    left: calc(1.25rem * -0.22 - 2px);
     top: calc(clamp(2.6rem, 12vw, 3.4rem) * 0.45 - 5px);
   }
   .fd-orb iframe {

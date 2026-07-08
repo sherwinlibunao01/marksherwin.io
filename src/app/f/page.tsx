@@ -34,9 +34,10 @@ const plexMono = IBM_Plex_Mono({
   variable: "--font-plex-mono",
 });
 
-// A/B variant: keep it out of search indexes so it never competes with "/".
+// "/" now renders this same page (see src/app/page.tsx); kept noindexed
+// here so "/f" never competes with "/" as a duplicate URL in search.
 export const metadata: Metadata = {
-  title: `${fullName} — A×D`,
+  title: fullName,
   description:
     "Automation systems for businesses that hate dropped leads. GoHighLevel, Zapier, n8n, and voice AI wired into one working system.",
   robots: { index: false },
@@ -73,11 +74,11 @@ export default function VariantF() {
       <header className="fd-top">
         <span>{fullName}</span>
         <nav>
-          <a href="/">A</a>
-          <a href="/b">B</a>
-          <a href="/d">D</a>
-          <a href="/e">A&times;B</a>
-          <a href={`mailto:${contactEmail}`}>email</a>
+          <a href="#work">Work</a>
+          <a href="#voice">Voice AI</a>
+          <a href="#faq">FAQ</a>
+          <a href="#contact">Contact</a>
+          <a href={`mailto:${contactEmail}`}>Email</a>
         </nav>
       </header>
 
@@ -319,7 +320,7 @@ export default function VariantF() {
               casefile.log
             </span>
           </div>
-          <div>
+          <div id="work">
             <span className="fd-m">
               <h2 style={{ "--i": 1 } as React.CSSProperties}>
                 Proof, not promises.
@@ -454,7 +455,7 @@ export default function VariantF() {
               faq.log
             </span>
           </div>
-          <div>
+          <div id="faq">
             <span className="fd-m">
               <h2 style={{ "--i": 1 } as React.CSSProperties}>
                 What buyers ask first.
@@ -494,7 +495,7 @@ export default function VariantF() {
               contact.init()
             </span>
           </div>
-          <div>
+          <div id="contact">
             <span className="fd-m">
               <h2 style={{ "--i": 1 } as React.CSSProperties}>
                 Build the workflow <em>once.</em>
