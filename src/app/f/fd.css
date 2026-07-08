@@ -1,0 +1,780 @@
+/* Variant F — the A×D mix ("Field Ledger"). Variant D's Swiss ruled-row
+   skeleton and giant pine numerals, carried in variant A's Field voice
+   (Space Grotesk / Inter / IBM Plex Mono via the shared --c-* / --font-*
+   root vars, schematic field-grid backdrop, terminal panels, boot
+   sequence, mono log annotations) at A's full content depth. Two C
+   ("Drench") elements survive the mix: the pine-drenched final row with
+   a one-shot accent wipe, and the hard slam easing on the numerals.
+   Scoped under .fdx — globals.css is shared via the root layout. */
+
+.fdx {
+  position: relative;
+  min-height: 100vh;
+  background: var(--c-bg);
+  color: var(--c-ink);
+  /* Re-declare the font aliases HERE, not just at :root: custom
+     properties substitute var() on the element that declares them, and
+     the next/font --font-space-grotesk etc. only exist on this div — at
+     :root the aliases compute to guaranteed-invalid and every
+     font-family using them silently falls back to the system sans. */
+  --font-display: var(--font-space-grotesk);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-plex-mono);
+  font-family: var(--font-body), sans-serif;
+  /* Wire.tsx's canvas classes read these on /b; defined here too so the
+     reused engine renders identically whether or not wire.css is loaded. */
+  --bw-line: var(--c-line);
+  --bw-pine: var(--c-primary);
+  --bw-clay: oklch(0.78 0.11 55);
+  --bw-clay-ink: var(--c-accent-ink);
+}
+/* field-grid is fixed at z-0; everything readable sits above it. */
+.fdx .fd-top,
+.fdx main,
+.fdx .fd-foot {
+  position: relative;
+  z-index: 1;
+}
+
+/* ——— the live wire, ledger serpentine (FWire.tsx, forked from /b) ———
+   The wire runs down the numeral gutter and glides across the page and
+   back at every row boundary (through the vertical padding bands where
+   no text sits), so the lead visibly sweeps left to right between
+   stages. Styles are self-contained duplicates of wire.css so /f doesn't
+   depend on /b's sheet. z-index 2 lets the lead stay visible over the
+   drench's pine field (the gutters and padding bands never hold text). */
+.fdx .bw-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.fdx .bw-canvas svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  overflow: visible;
+}
+.fdx .bw-route {
+  fill: none;
+  stroke: var(--c-line);
+  stroke-width: 2;
+}
+.fdx .bw-draw {
+  fill: none;
+  stroke: var(--c-primary);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+.fdx .bw-pulse {
+  position: absolute;
+  top: -7px;
+  left: -7px;
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle,
+    oklch(0.88 0.09 60),
+    oklch(0.78 0.11 55) 55%,
+    oklch(0.72 0.13 55 / 0) 78%
+  );
+  opacity: 0;
+}
+.fdx.bw-active .bw-pulse {
+  opacity: 1;
+}
+
+/* Wire anchors: a square node in the gutter beside each numeral. */
+.fd-rail {
+  position: relative;
+}
+.fd-wnode {
+  position: absolute;
+  left: calc(clamp(1.25rem, 6vw, 6rem) * -0.5 - 5px);
+  top: calc(clamp(3.2rem, 8vw, 7rem) * 0.45 - 5px);
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  border: 2px solid var(--c-primary);
+  background: var(--c-bg);
+  transition:
+    background 0.5s var(--ease-out-quart),
+    border-color 0.5s var(--ease-out-quart),
+    box-shadow 0.5s var(--ease-out-quart);
+}
+[data-station].bw-lit .fd-wnode {
+  background: var(--c-accent);
+  box-shadow: 0 0 14px oklch(0.72 0.13 55 / 0.5);
+}
+.fd-drench .fd-wnode {
+  border-color: var(--c-accent);
+  background: var(--c-primary);
+}
+.fd-drench.bw-lit .fd-wnode {
+  background: var(--c-accent);
+  box-shadow: 0 0 16px oklch(0.88 0.07 60 / 0.7);
+}
+
+/* Numerals rest muted until the lead docks at their node (JS + motion
+   only; default is fully visible). The first rule also neutralizes
+   wire.css's whole-row station dim if that sheet arrives via client-side
+   navigation from /b or /e — F's rows enter via their own mask slams. */
+@media (prefers-reduced-motion: no-preference) {
+  .fdx.bw-active [data-station] {
+    opacity: 1;
+    transform: none;
+  }
+  .fdx.bw-active [data-station] .fd-slam {
+    opacity: 0.28;
+    transition: opacity 0.6s var(--ease-out-quart);
+  }
+  .fdx.bw-active [data-station].bw-lit .fd-slam {
+    opacity: 1;
+  }
+}
+
+/* ——— header ——— */
+.fd-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.4rem clamp(1.25rem, 4vw, 3rem);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.78rem;
+}
+.fd-top nav {
+  display: flex;
+  gap: 1.6rem;
+}
+.fd-top a {
+  color: var(--c-muted);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.fd-top a:hover {
+  color: var(--c-primary);
+}
+
+/* ——— ledger rows (D's skeleton) ——— */
+.fd-row {
+  display: grid;
+  grid-template-columns: minmax(120px, 18vw) minmax(0, 1fr);
+  gap: 2rem;
+  align-items: start;
+  border-top: 1px solid var(--c-line);
+  padding: clamp(3.5rem, 9vh, 6.5rem) clamp(1.25rem, 6vw, 6rem);
+}
+.fd-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+.fd-num {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(3.2rem, 8vw, 7rem);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  color: var(--c-primary);
+  font-variant-numeric: tabular-nums;
+}
+.fd-ref {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.72rem;
+  color: var(--c-muted);
+  letter-spacing: 0.01em;
+}
+.fd-row h1,
+.fd-row h2 {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(2.1rem, 5vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+  max-width: 18ch;
+  text-wrap: balance;
+}
+/* Space Grotesk ships no italic; emphasis is clay, not synthesized oblique. */
+.fd-row h2 em {
+  font-style: normal;
+  color: var(--c-accent-ink);
+}
+.fd-drench h2 em {
+  color: var(--c-accent);
+}
+.fd-d {
+  margin-top: 1.3rem;
+  max-width: 46ch;
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: var(--c-muted);
+  text-wrap: pretty;
+}
+.fd-benefit {
+  margin-top: 0.75rem;
+  max-width: 46ch;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+/* ——— leak / fix ledger annotations ———
+   Deliberate named system, not scaffolding: every stage entry is booked
+   the way a ledger books a loss and its correction. */
+.fd-tag {
+  display: inline-block;
+  margin-right: 0.6rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 2px;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  vertical-align: 0.12em;
+  white-space: nowrap;
+}
+.fd-tag-leak {
+  color: var(--c-accent-ink);
+  background: oklch(0.88 0.07 60 / 0.4);
+}
+.fd-tag-fix {
+  color: var(--c-primary-ink);
+  background: var(--c-primary);
+}
+.fd-pain {
+  margin-top: 1.3rem;
+  max-width: 52ch;
+  font-size: 1.02rem;
+  line-height: 1.6;
+  font-weight: 500;
+  text-wrap: pretty;
+}
+.fd-fix {
+  margin-top: 0.85rem;
+  max-width: 52ch;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--c-muted);
+  text-wrap: pretty;
+}
+
+/* ——— masks: D's metronome settle with C's slam ———
+   StaggerGroup adds .is-in on first view. Numerals slam (fast, hard
+   expo); copy settles a beat behind (soft rise). Reduced motion sees
+   everything in place immediately (StaggerGroup adds .is-in on mount). */
+.fd-m {
+  display: block;
+  overflow: hidden;
+}
+.fd-m > * {
+  display: block;
+  transform: translateY(112%);
+  transition: transform 620ms var(--ease-out-expo);
+  transition-delay: calc(var(--i, 0) * 120ms);
+}
+.fd-m.fd-slam > * {
+  transition-duration: 460ms;
+}
+.is-in .fd-m > * {
+  transform: none;
+}
+.fd-soft {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 700ms var(--ease-out-expo),
+    transform 700ms var(--ease-out-expo);
+  transition-delay: calc(var(--i, 0) * 120ms);
+}
+.is-in .fd-soft {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .fd-m > *,
+  .fd-soft {
+    transform: none;
+    opacity: 1;
+    transition: none;
+  }
+}
+/* Hero slam: time-based (load), keyframe twin of the scroll version so
+   it works without an observer. Visible by default outside the query. */
+@media (prefers-reduced-motion: no-preference) {
+  .fd-hero .fd-m > * {
+    animation: fd-slam-in 620ms var(--ease-out-expo) both;
+    animation-delay: calc(var(--i, 0) * 110ms);
+  }
+}
+@keyframes fd-slam-in {
+  from {
+    transform: translateY(112%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* ——— hero row ——— */
+.fd-hero {
+  border-top: none;
+  padding-top: clamp(4rem, 12vh, 7.5rem);
+}
+.fd-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.75rem;
+  color: var(--c-muted);
+}
+.fd-dot {
+  position: relative;
+  display: inline-flex;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 9999px;
+  background: var(--c-primary);
+  color: var(--c-primary);
+}
+/* Hero headline runs larger than the ledger rows so the type block
+   balances the tall portrait panel beside it. */
+.fd-hero h1 {
+  margin-top: 1.4rem;
+  font-size: clamp(2.8rem, 6.4vw, 5.4rem);
+  line-height: 0.98;
+}
+.fd-hero .fd-d {
+  font-size: 1.08rem;
+  max-width: 48ch;
+}
+.fd-hero-grid {
+  display: grid;
+  gap: 3rem;
+}
+@media (min-width: 1024px) {
+  .fd-hero-grid {
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 4rem;
+    align-items: start;
+  }
+}
+.fd-cue {
+  margin-top: 2.6rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.78rem;
+  color: var(--c-muted);
+}
+/* "follow the lead": pencil-bold phrase tied to the clay pulse by an
+   inline dot and a hand-drawn scribble underline in the lead's color. */
+.fd-cue-hl {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.45rem;
+  font-weight: 500;
+  color: var(--c-ink);
+}
+.fd-cue-dot {
+  display: inline-block;
+  width: 0.4rem;
+  height: 0.4rem;
+  margin-right: 0.45rem;
+  border-radius: 9999px;
+  background: oklch(0.78 0.11 55);
+  vertical-align: 0.05em;
+}
+.fd-scribble {
+  position: absolute;
+  left: -2px;
+  right: -4px;
+  bottom: 0;
+  width: calc(100% + 6px);
+  height: 0.55rem;
+}
+.fd-scribble path {
+  fill: none;
+  stroke: oklch(0.72 0.13 55);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+/* The scribble draws itself in once the boot sequence settles. */
+@media (prefers-reduced-motion: no-preference) {
+  .fd-scribble path {
+    stroke-dasharray: 1;
+    animation: fd-scribble-draw 650ms var(--ease-out-quart) 1450ms both;
+  }
+  .fd-scribble path:last-child {
+    animation-delay: 1650ms;
+  }
+}
+@keyframes fd-scribble-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ——— terminal panels (A's visual signature) ——— */
+.fd-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.fd-panel {
+  border: 1px solid var(--c-line);
+  background: var(--c-surface);
+}
+.fd-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--c-line);
+  padding: 0.625rem 1rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.75rem;
+  color: var(--c-muted);
+}
+.fd-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+.fd-panel-body {
+  padding: 1rem;
+}
+.fd-portrait {
+  width: 100%;
+  border: 1px solid var(--c-line);
+  object-fit: cover;
+}
+.fd-panel-foot {
+  display: flex;
+  gap: 1.25rem;
+  border-top: 1px solid var(--c-line);
+  padding: 0.75rem 1rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.75rem;
+}
+.fd-panel-foot a {
+  color: var(--c-muted);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.fd-panel-foot a:hover {
+  color: var(--c-primary);
+}
+.fd-metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-top: 1px solid var(--c-line);
+}
+.fd-metric:first-of-type {
+  border-top: none;
+}
+.fd-metric span:first-child {
+  font-size: 0.875rem;
+  color: var(--c-muted);
+}
+.fd-metric span:last-child {
+  font-family: var(--font-mono), monospace;
+  font-size: 1.1rem;
+  letter-spacing: -0.01em;
+}
+
+/* ——— CTAs ——— */
+.fd-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.6rem;
+  margin-top: 2.2rem;
+}
+.fd-btn {
+  display: inline-block;
+  background: var(--c-primary);
+  color: var(--c-primary-ink);
+  padding: 0.95rem 1.7rem;
+  border-radius: 2px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    transform 0.45s var(--ease-out-expo),
+    box-shadow 0.45s var(--ease-out-expo);
+}
+.fd-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 34px -14px var(--c-primary);
+}
+.fd-btn:active {
+  transform: scale(0.97);
+}
+.fd-ghost {
+  color: var(--c-ink);
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  text-decoration-color: var(--c-primary);
+  text-decoration-thickness: 2px;
+  transition: color 0.3s;
+}
+.fd-ghost:hover {
+  color: var(--c-primary);
+}
+
+/* ——— automations ledger list ——— */
+.fd-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 2rem;
+  max-width: 56rem;
+}
+.fd-list li {
+  border-top: 1px solid var(--c-line);
+  padding: 1.1rem 0;
+}
+.fd-list-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.4rem 1.5rem;
+}
+.fd-list-name {
+  font-weight: 600;
+  font-size: 1rem;
+}
+.fd-list-out {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.75rem;
+  color: var(--c-primary);
+}
+.fd-list-pain {
+  margin-top: 0.4rem;
+  max-width: 52ch;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+.fd-list-d {
+  margin-top: 0.35rem;
+  max-width: 52ch;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--c-muted);
+}
+.fd-list-d .fd-tag {
+  font-size: 0.62rem;
+  padding: 0.06rem 0.35rem;
+  margin-right: 0.5rem;
+}
+
+/* ——— voice row ——— */
+.fd-points {
+  margin-top: 1.2rem;
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.fd-points li {
+  display: flex;
+  gap: 0.75rem;
+  align-items: baseline;
+  font-size: 0.95rem;
+}
+.fd-points li::before {
+  content: ">";
+  font-family: var(--font-mono), monospace;
+  color: var(--c-muted);
+}
+.fd-orb {
+  margin-top: 1.8rem;
+  max-width: 28rem;
+}
+.fd-orb iframe {
+  display: block;
+  width: 100%;
+  height: 440px;
+  border: 0;
+  background: white;
+}
+.fd-fallback {
+  font-size: 0.88rem;
+}
+
+/* ——— FAQ ——— */
+.fd-faq {
+  margin-top: 1.8rem;
+  max-width: 46rem;
+}
+.fd-faq details {
+  border-top: 1px solid var(--c-line);
+}
+.fd-faq details:last-child {
+  border-bottom: 1px solid var(--c-line);
+}
+.fd-faq summary {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 0;
+  font-weight: 500;
+  font-size: 0.98rem;
+  cursor: pointer;
+  list-style: none;
+  transition: color 0.3s;
+}
+.fd-faq summary::-webkit-details-marker {
+  display: none;
+}
+.fd-faq summary:hover {
+  color: var(--c-primary);
+}
+.fd-plus {
+  font-family: var(--font-mono), monospace;
+  color: var(--c-muted);
+  transition: rotate 0.35s var(--ease-out-expo);
+}
+.fd-faq details[open] .fd-plus {
+  rotate: 45deg;
+}
+.fd-faq details p {
+  padding: 0 0 1.2rem;
+  max-width: 58ch;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--c-muted);
+}
+
+/* ——— the drench close (C's surviving color field) ———
+   Pine by default — the drench is the resting state, not a reveal — with
+   a one-shot clay light-sweep across the surface when it enters view. */
+.fd-drench {
+  position: relative;
+  overflow: hidden;
+  border-top: none;
+  background: var(--c-primary);
+  color: var(--c-primary-ink);
+  --fd-soft-ink: oklch(0.89 0.03 160);
+  --fd-line-inv: oklch(0.98 0.008 160 / 0.25);
+}
+.fd-drench::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transform: translateX(-101%) skewX(-12deg);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    oklch(0.88 0.07 60 / 0.22) 45%,
+    oklch(0.98 0.008 160 / 0.14) 55%,
+    transparent
+  );
+}
+@media (prefers-reduced-motion: no-preference) {
+  .fd-drench.is-in::after {
+    transition: transform 1100ms var(--ease-out-quart) 150ms;
+    transform: translateX(101%) skewX(-12deg);
+  }
+}
+.fd-drench .fd-num {
+  color: var(--c-accent);
+}
+.fd-drench .fd-ref,
+.fd-drench .fd-d {
+  color: var(--fd-soft-ink);
+}
+.fd-drench .fd-btn {
+  background: var(--c-accent);
+  color: var(--c-accent-ink);
+}
+.fd-drench .fd-btn:hover {
+  box-shadow: 0 14px 34px -14px oklch(0.88 0.07 60 / 0.9);
+}
+.fd-endrow {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  margin-top: 1.6rem;
+}
+.fd-face {
+  width: 68px;
+  height: 68px;
+  object-fit: cover;
+  border-radius: 2px;
+  border: 1px solid var(--fd-line-inv);
+}
+.fd-endrow .fd-d {
+  margin-top: 0;
+}
+.fd-links {
+  display: flex;
+  gap: 1.75rem;
+  margin-top: 1.9rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.78rem;
+}
+.fd-links a {
+  color: var(--fd-soft-ink);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.fd-links a:hover {
+  color: var(--c-accent);
+}
+.fd-tools {
+  margin-top: 2rem;
+  max-width: 52ch;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.75rem;
+  line-height: 1.7;
+  color: var(--fd-soft-ink);
+}
+
+/* ——— footer (rides the drench out) ——— */
+.fd-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: space-between;
+  background: var(--c-primary);
+  color: var(--fd-soft-ink, oklch(0.89 0.03 160));
+  border-top: 1px solid oklch(0.98 0.008 160 / 0.25);
+  padding: 2rem clamp(1.25rem, 4vw, 3rem);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.72rem;
+}
+
+/* ——— small screens: rail stacks above copy ——— */
+@media (max-width: 640px) {
+  .fd-row {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+  .fd-rail {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 1rem;
+  }
+  .fd-num {
+    font-size: clamp(2.6rem, 12vw, 3.4rem);
+  }
+  .fd-wnode {
+    left: calc(1.25rem * -0.5 - 5px);
+    top: calc(clamp(2.6rem, 12vw, 3.4rem) * 0.45 - 5px);
+  }
+  .fd-orb iframe {
+    height: 400px;
+  }
+}

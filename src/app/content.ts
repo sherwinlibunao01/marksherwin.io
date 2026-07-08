@@ -29,7 +29,7 @@ export const howItWorks = [
     step: "03",
     name: "Respond",
     detail:
-      "An SMS, email, or voice AI agent replies within seconds — not the next business day when the lead has already called a competitor.",
+      "An SMS, email, or voice AI agent replies within seconds, not the next business day when the lead has already called a competitor.",
     benefit: "Speed-to-lead is the single biggest lever on close rate. Whoever answers first usually wins the job.",
   },
   {
@@ -134,17 +134,17 @@ export const faqs = [
   {
     question: "Do I need GoHighLevel already set up?",
     answer:
-      "No — I can set up a sub-account from scratch, or build inside what you already have. Either way you end up with one connected system instead of a patchwork of tools.",
+      "No. I can set up a sub-account from scratch, or build inside what you already have. Either way you end up with one connected system instead of a patchwork of tools.",
   },
   {
     question: "How long does a typical build take?",
     answer:
-      "Depends on scope — a single funnel or follow-up workflow usually ships in one to two weeks. You'll get a clear timeline before any work starts, not an open-ended estimate.",
+      "Depends on scope: a single funnel or follow-up workflow usually ships in one to two weeks. You'll get a clear timeline before any work starts, not an open-ended estimate.",
   },
   {
     question: "How is pricing structured?",
     answer:
-      "Scoped and agreed before work starts, so you know the cost upfront — no open-ended hourly billing or surprise invoices partway through a build.",
+      "Scoped and agreed before work starts, so you know the cost upfront. No open-ended hourly billing, no surprise invoices partway through a build.",
   },
   {
     question: "What do I get once the build is done?",
@@ -154,6 +154,6 @@ export const faqs = [
   {
     question: "Can you work with tools besides GoHighLevel?",
     answer:
-      "Yes — Zapier, n8n, custom webhooks, and direct API connections tie in whatever you're already using rather than forcing a rebuild.",
+      "Yes. Zapier, n8n, custom webhooks, and direct API connections tie in whatever you're already using rather than forcing a rebuild.",
   },
 ];

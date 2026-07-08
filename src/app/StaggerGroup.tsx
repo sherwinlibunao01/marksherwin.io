@@ -14,10 +14,13 @@ export function StaggerGroup({
   children,
   className,
   as: Tag = "div",
+  "data-station": dataStation,
 }: {
   children: React.ReactNode;
   className?: string;
   as?: "div" | "ul";
+  /** Marks the group as a wire station so Wire.tsx can ignite it. */
+  "data-station"?: string;
 }) {
   const ref = useRef<HTMLDivElement & HTMLUListElement>(null);
 
@@ -44,7 +47,7 @@ export function StaggerGroup({
   }, []);
 
   return (
-    <Tag ref={ref} className={className}>
+    <Tag ref={ref} className={className} data-station={dataStation}>
       {children}
     </Tag>
   );

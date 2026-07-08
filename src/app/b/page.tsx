@@ -74,6 +74,7 @@ export default function VariantB() {
           <a href="/">A</a>
           <a href="/d">D</a>
           <a href="/e">A&times;B</a>
+          <a href="/f">A&times;D</a>
           <a href={`mailto:${contactEmail}`}>email</a>
         </nav>
       </header>
