@@ -876,7 +876,11 @@
     font-size: clamp(2.6rem, 12vw, 3.4rem);
   }
   .fd-wnode {
-    left: calc(1.25rem * -0.22 - 2px);
+    /* Mobile stacks the numeral inline (fd-rail is row-direction here),
+       not in its own gutter column like desktop, so the desktop
+       "closer in" offset crowds the numeral glyph here. Keep mobile at
+       its original, wider offset instead. */
+    left: calc(1.25rem * -0.5 - 5px);
     top: calc(clamp(2.6rem, 12vw, 3.4rem) * 0.45 - 5px);
   }
   .fd-orb iframe {
