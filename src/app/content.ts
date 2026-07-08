@@ -166,10 +166,10 @@ export const voiceAiUrl =
   "https://agent.retellai.com/orb/agent_dd540600e9a86a7de5a9bdd7a6?token=be40d9a1c4ee510cc72a088bcc9f89d3";
 
 export const voiceAiPoints = [
-  "Answers missed calls",
-  "Qualifies new leads",
-  "Sends clean CRM notes",
-  "Works after hours",
+  "Asks about your business",
+  "Talks through your exact bottleneck",
+  "Explains the fix in plain language",
+  "Nothing you say is stored anywhere",
 ];
 
 export const contactEmail = "sherwinlibunao01@gmail.com";

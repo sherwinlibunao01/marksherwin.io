@@ -393,9 +393,10 @@ export default function VariantF() {
               className="fd-d fd-soft"
               style={{ "--i": 2 } as React.CSSProperties}
             >
-              Built on Retell AI: it answers, qualifies, and collects lead
-              details while your team stays focused on the work in front of
-              them.
+              Built on Retell AI, the same kind of voice agent I wire into
+              real client systems. Tell it what&rsquo;s slowing your business
+              down, and it&rsquo;ll talk through exactly how I&rsquo;d
+              automate the fix.
             </p>
             <ul
               className="fd-points fd-soft"
