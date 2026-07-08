@@ -588,7 +588,10 @@
    composition rather than four uniform boxes. */
 .fd-cases {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(440px, 1fr));
+  /* min(440px, 100%) lets a track shrink to the full container width on
+     narrow screens instead of forcing a hard 440px floor that overflows
+     the viewport and makes the whole page scroll sideways on mobile. */
+  grid-template-columns: repeat(auto-fit, minmax(min(440px, 100%), 1fr));
   gap: 1.75rem;
   margin-top: 2rem;
   max-width: 68rem;
